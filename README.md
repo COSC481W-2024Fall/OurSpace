@@ -1,12 +1,12 @@
-# Team Name: [OurSace]
+# Team Name: OurSace
 
 ## Project Description
-[OurSpace is a simplistic nosolgic blast to the past social media website that takes users back to the days when MySpace was still at its peak. Our goal is to make a engaging social media that does't just mimic social media from the past, but improves on concept laid out almost 20 years ago.]
+OurSpace is a simplistic nosolgic blast to the past social media website that takes users back to the days when MySpace was still at its peak. Our goal is to make a engaging social media that does't just mimic social media from the past, but improves on concept laid out almost 20 years ago.
 
 ## Team Members
 
-### [Evan Meyer]
-[Evan is the team leader of this project, and motivated to see it come to creative fruition. Evan is a senior at EMU graduating at the end of the Fall 2024 semester. He is exsprenced in Java, Python, and HTML programming as well as having creative abilities with creating music, 3d models, and engeenering]
+### Evan Meyer
+Evan is the team leader of this project, and motivated to see it come to creative fruition. Evan is a senior at EMU graduating at the end of the Fall 2024 semester. He is exsprenced in Java, Python, and HTML programming as well as having creative abilities with creating music, 3d models, and engeenering
 
 ### [Member 2 Name]
 [Member 2's brief bio. Include their role in the project, academic background, interests, and any relevant experience.]
