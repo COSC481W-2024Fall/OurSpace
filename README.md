@@ -5,8 +5,10 @@ OurSpace is a simplistic nosolgic blast to the past social media website that ta
 
 ## Team Members
 
-### Evan Meyer
-Evan is the team leader of this project, and motivated to see it come to creative fruition. Evan is a senior at EMU graduating at the end of the Fall 2024 semester. He is experienced in Java, Python, and HTML programming as well as having creative abilities with creating music, 3d models, and engineering
+### [Evan Meyer](https://github.com/EvanMeyerEmich)
+Evan is the team leader of the OurSpace project, driven by a strong desire to see it come to life creatively. As a senior at Eastern Michigan University, he is set to graduate at the end of the Fall 2024 semester. Evan brings a wealth of experience in Java, Python, and HTML programming, along with a creative flair for music production, 3D modeling, and engineering. His diverse skill set and passion make him a pivotal force in the project’s success.
+
+### Ming Murray
 
 ### Ming Murray
 Ming is a member of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
@@ -39,3 +41,6 @@ Ming is a member of the team, mostly related to backend logic and specifically c
 
 ### 6. Face Mask Policy
 - **Mask Policy:** Team members are free to wear face masks during meetings if they choose to. There is no requirement to wear masks unless it is mandated by the institution or a specific team member requests it due to health concerns.
+
+### 7. Team Meatings
+- **Discord:** The team plans to hold most of their weekly discussions remotely on weekends. This schedule allows everyone to recap and catch up after the week, offering the convenience of participating from home. Periodic in-person meetings will also be arranged as needed.
