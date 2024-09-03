@@ -6,11 +6,10 @@ OurSpace is a simplistic nosolgic blast to the past social media website that ta
 ## Team Members
 
 ### Evan Meyer
-Evan is the team leader of this project, and motivated to see it come to creative fruition. Evan is a senior at EMU graduating at the end of the Fall 2024 semester. He is exsprenced in Java, Python, and HTML programming as well as having creative abilities with creating music, 3d models, and engeenering
+Evan is the team leader of this project, and motivated to see it come to creative fruition. Evan is a senior at EMU graduating at the end of the Fall 2024 semester. He is experienced in Java, Python, and HTML programming as well as having creative abilities with creating music, 3d models, and engineering
 
-### [Member 2 Name]
-[Member 2's brief bio. Include their role in the project, academic background, interests, and any relevant experience.]
-
+### [Ming Murray]
+Ming is a member of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
 ### [Member 3 Name]
 [Member 3's brief bio. Include their role in the project, academic background, interests, and any relevant experience.]
 
