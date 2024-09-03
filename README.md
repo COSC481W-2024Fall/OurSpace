@@ -8,9 +8,9 @@ OurSpace is a simplistic nosolgic blast to the past social media website that ta
 ### [Evan Meyer](https://github.com/EvanMeyerEmich)
 Evan is the team leader of the OurSpace project, driven by a strong desire to see it come to life creatively. As a senior at Eastern Michigan University, he is set to graduate at the end of the Fall 2024 semester. Evan brings a wealth of experience in Java, Python, and HTML programming, along with a creative flair for music production, 3D modeling, and engineering. His diverse skill set and passion make him a pivotal force in the project’s success.
 
-### Ming Murray
 
-### Ming Murray
+
+### [Ming Murray](https://github.com/mingmurray)
 Ming is a member of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
 ### [Member 3 Name]
 [Member 3's brief bio. Include their role in the project, academic background, interests, and any relevant experience.]
