@@ -11,8 +11,8 @@ Evan is the team leader of the OurSpace project, driven by a strong desire to se
 ### [Ming Murray](https://github.com/mingmurray)
 Ming is a member of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
 
-### [Member 3 Name]
-[Member 3's brief bio. Include their role in the project, academic background, interests, and any relevant experience.]
+### [Carolina Mancilla](https://github.com/carolinamancilla-381)
+Carolina is a member of the team, mostly related to backend and connections to database, but also has some good experience with frontend. Carolina is a senior at EMU graduating at the end of the current semester in December. I have the most experience with Java, MySQL, Python, HTML and CSS. 
 
 ### [Madelyn Smith](https://github.com/MadSmith17)
 Madelyn is a member of the team, wants to mostly focus on front end for this project to get more exposuer to it. Madelyn is a senior at EMU and will be graduation in April. Has experience with C++, C, Java, Javascript, HTML, web design, python, and CAD.
