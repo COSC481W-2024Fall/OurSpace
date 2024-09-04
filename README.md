@@ -33,7 +33,8 @@ Madelyn is a member of the team, wants to mostly focus on front end for this pro
 - **Guideline:** Before making any changes to another team member's work in the repository, the team member must:
   1. Discuss the proposed change with the original author.
   2. Ensure the change is documented and agreed upon by the author.
-  3. If the author is unavailable, make a pull request or branch with clear comments and wait for approval before merging.
+  3. If the author is unavailable, the remaining group memebers can discuss pushing the work.
+  
   
 ### 5. Language Policy
 - **English:** All team communication will be conducted in English to ensure clarity and inclusivity.
