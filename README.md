@@ -1,15 +1,12 @@
-# Team Name: OurSace
+# Team Name: OurSpace
 
 ## Project Description
 OurSpace is a simplistic nosolgic blast to the past social media website that takes users back to the days when MySpace was still at its peak. Our goal is to make a engaging social media that does't just mimic social media from the past, but improves on concept laid out almost 20 years ago.
 
 ## Team Members
 
-### [Evan Meyer](https://github.com/EvanMeyerEmich)
-Evan is the team leader of the OurSpace project, driven by a strong desire to see it come to life creatively. As a senior at Eastern Michigan University, he is set to graduate at the end of the Fall 2024 semester. Evan brings a wealth of experience in Java, Python, and HTML programming, along with a creative flair for music production, 3D modeling, and engineering. His diverse skill set and passion make him a pivotal force in the project’s success.
-
 ### [Ming Murray](https://github.com/mingmurray)
-Ming is a member of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
+Ming the leader of the team, mostly related to backend logic and specifically connections to the database. Ming is a senior at EMU graduating at the end of the current semester. They have the most experience with Java, Java Springboot, Angular, Python, C, C++, Javascript, and Typescript. 
 
 ### [Carolina Mancilla](https://github.com/carolinamancilla-381)
 Carolina is a member of the team, mostly related to backend and connections to database, but also has some good experience with frontend. Carolina is a senior at EMU graduating at the end of the current semester in December. I have the most experience with Java, MySQL, Python, HTML and CSS. 
