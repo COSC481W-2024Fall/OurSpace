@@ -1,0 +1,1 @@
+{"version":1,"defects":{"LoginTest::testAuthenticateSuccess":8,"LoginTest::testAuthenticateFailure":8},"times":{"LoginTest::testSanitizeInput":0.003,"LoginTest::testAuthenticateSuccess":0.005,"LoginTest::testAuthenticateFailure":0.001}}
