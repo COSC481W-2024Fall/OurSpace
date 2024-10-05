@@ -4,23 +4,33 @@
         <title>
             OurSpace Login
         </title>
-
-        <body>
-            <form action="oslogin.php" method="post">
-                <h2>LOGIN</h2>
-
-                <label>Username:</label>
-                <input type="text" name="username" placeholder="Enter username here" id="username" required>
-
-                <br>
-
-                <label>Password:</label>
-                <input type="password" name="password" placeholder="Enter password here" id="password" required>
-                <br>
-
-                <button type="submit">Login</button>
-
-            </form>
-        </body>
+        <link rel="stylesheet" href="login.css">
     </head>
+
+    <body>
+        <h1>OurSpace</h1>
+
+        <form action="oslogin.php" method="post">
+            <h2>LOGIN</h2>
+
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter username here" id="username" required>
+
+            <br>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter password here" id="password" required>
+            <br>
+
+            <button type="submit" id="loginbutton">Login</button>
+
+
+            <p>Don't have an account?</p>
+            <button onclick="window.location.href='signup.html'" id="signupbutton">Sign Up</button>
+
+
+        </form>
+
+        
+    </body>
 </html>
