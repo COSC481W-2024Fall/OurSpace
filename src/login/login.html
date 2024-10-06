@@ -5,16 +5,19 @@
             OurSpace Login
         </title>
         <link rel="stylesheet" href="login.css">
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     </head>
 
     <body>
         <h1>OurSpace</h1>
 
-        <form action="oslogin.php" method="post">
+        <form id="loginForm">
             <h2>LOGIN</h2>
 
             <label>Username:</label>
-            <input type="text" name="username" placeholder="Enter username here" id="username" required>
+            <input type="email" name="username" placeholder="Enter username here" id="username" required>
 
             <br>
 
@@ -31,6 +34,7 @@
 
         </form>
 
-        
+        <script src="firebaseLogin.js"></script>
     </body>
+
 </html>

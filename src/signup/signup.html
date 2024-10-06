@@ -1,44 +1,45 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<html>
-    <head>
-        <title>OurSpace SignUp</title>
-        <link rel="stylesheet" href="signup.css">
-    </head>
+    <title>OurSpace SignUp</title>
 
+    <link rel="stylesheet" href="signup.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
 
-    <body>
+    <h1>OurSpace</h1>
 
-        <h1>OurSpace</h1>
+    <form id="signupForm">
 
-        <form method="post">
+        <h2>SIGN UP</h2>
 
-            <h2>SIGN UP</h2>
+        <label>Name: </label>
+        <input type="text" name="name" id="name" required>
 
-            <label>Name: </label>
-            <input type="text" name="name" id="name" required>
+        <br>
 
-            <br>
+        <label>Username (Email): </label>
+        <input type="email" name="username" id="username" required>
 
-            <label>Username: </label>
-            <input type="text" name="username" id="username" required>
-
-            <br>
-
-            <label>Password: </label>
-            <input type="text" name="password" id="password" required>
-
-            <br>
-
-            <label>Confirm Password: </label>
-            <input type="text" name="password" id="password" required>
-
-            <br>
-
-            <button type="submit" name="submit" id="submit">Sign Up!</button>
-
-        </form>
-
-    </body>
-
+        <br>
+        
+        <label>Password: </label>
+        <input type="password" name="password" id="password" required>
+        
+        <br>
+        
+        <label>Confirm Password: </label>
+        <input type="password" name="confirm-password" id="confirm-password" required>
+        
+        <br>
+        <button type="submit" id="submit">Sign Up!</button>
+    </form>
+    <script src="firebaseAuth.js"></script>
+</body>
 </html>
