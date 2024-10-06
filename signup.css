@@ -30,7 +30,7 @@ input[type="text"], input[type="password"], input[type="email"] {
     margin-bottom: 20px; 
 }
 
-#loginbutton, #signupbutton {
+button {
     background-color: darkmagenta;
     color: white;
     border: none;
@@ -42,6 +42,6 @@ input[type="text"], input[type="password"], input[type="email"] {
     margin-top: 15px; 
 }
 
-#loginbutton:hover, #signupbutton:hover {
+button:hover {
     background-color: orange;
 }
