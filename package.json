@@ -1,5 +1,25 @@
 {
   "dependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "build": "^0.1.4",
     "firebase": "^10.14.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "echo 'No build step needed'"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^25.0.1",
+    "util": "^0.12.5"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom",
+      "<rootDir>/jest.setup.js"
+    ],
+    "testEnvironment": "jest-environment-jsdom"
   }
 }
