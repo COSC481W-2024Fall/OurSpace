@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
+    "build": "^0.1.4",
     "firebase": "^10.14.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "echo 'No build step needed'"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",
