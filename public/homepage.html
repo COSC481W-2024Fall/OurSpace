@@ -9,48 +9,76 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: steelblue;
+            background-color: #4682b4; /* SteelBlue background */
         }
         .navbar {
-            background-color:orange; 
-            padding: 10px;
+            background-color: #ffa500; /* Orange color for top box */
+            padding: 20px;
             text-align: center;
+            position: relative;
         }
         .navbar h1 {
             margin: 0;
             padding: 0;
+            font-size: 3em; /* Bigger font for the logo */
             display: inline-block;
-            color: darkmagenta;
+            color: darkmagenta; /* DarkMagenta for OurSpace */
         }
         .menu {
             display: inline-block;
             margin-left: 20px;
         }
-        .menu a {
+        .menu button {
             margin: 0 10px;
-            text-decoration: none;
-            color:black;
+            padding: 10px 20px;
+            background-color: darkmagenta; /* DarkMagenta button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu button:hover {
+            background-color: #4682b4; /* SteelBlue on hover */
+        }
+        .sign-out-btn {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%); /* Center vertically */
+        }
+        .sign-out-btn button {
+            padding: 10px 20px;
+            background-color: darkmagenta; /* DarkMagenta for button */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .sign-out-btn button:hover {
+            background-color: #4682b4; /* SteelBlue on hover */
         }
         .content {
             display: flex;
             margin: 20px;
-            color: black;
         }
         .posts {
             flex: 3;
             margin-right: 20px;
         }
         .post {
-            border: 1px solid #ccc;
+            background-color: darkmagenta; /* DarkMagenta for Post box */
+            color: white;
+            border: none;
             padding: 20px;
             margin-bottom: 20px;
-            background-color:darkmagenta;
+            border-radius: 10px;
         }
         .friends-list {
+            background-color: darkmagenta; /* DarkMagenta for Friends List box */
+            color: white;
             flex: 1;
-            border: 1px solid #ccc;
             padding: 10px;
-            background-color:darkmagenta;
+            border-radius: 10px;
         }
         .friends-list ul {
             list-style-type: none;
@@ -67,10 +95,16 @@
     <div class="navbar">
         <h1>OurSpace</h1>
         <div class="menu">
-            <a href="#">Home</a>
-            <a href="#">Add Post</a>
-            <a href="#">Add Friend</a>
-            <a href="#">My Profile</a>
+            <!-- Menu Items as Buttons -->
+            <button onclick="window.location.reload();">Home</button> <!-- Home button reloads the page -->
+            <button>Add Post</button>
+            <button>Add Friend</button>
+            <button>My Profile</button>
+        </div>
+
+        <!-- Sign Out Button -->
+        <div class="sign-out-btn">
+            <button>Sign Out</button>
         </div>
     </div>
 
