@@ -87,6 +87,28 @@
         .friends-list li {
             padding: 5px 0;
         }
+        .post-form {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+            resize: none;
+        }
+        button.post-btn {
+            background-color: darkmagenta;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button.post-btn:hover {
+            background-color: #4682b4;
+        }
     </style>
 </head>
 <body>
@@ -112,11 +134,20 @@
     <div class="content">
         <!-- Posts Section -->
         <div class="posts">
-            <div class="post">
-                <h2>Post 1</h2>
-                <p>This is the content of the first post.</p>
-                <button>Reply</button>
+            
+            <!-- Post Creation Form -->
+            <div class="post-form">
+                <form id="postForm">
+                    <textarea id="postContent" rows="4" placeholder="What's on your mind?" required></textarea>
+                    <button type="submit" class="post-btn">Post</button>
+                </form>
             </div>
+            
+            <!-- Existing Posts -->
+            <div id="postsContainer">
+                <!-- Posts will be loaded here dynamically -->
+            </div>
+
         </div>
 
         <!-- Friends List -->
@@ -129,6 +160,12 @@
             </ul>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="displayPost.js"></script>
+    <script src="firebasePost.js"></script>
 
 </body>
 </html>
