@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 20px;
+}
+.profile-info {
+    flex-grow: 1;
+}
+.bio {
+    margin-top: 5px;
+    font-style: italic;
+    display: block;
+}
+.posts {
+    margin-top: 20px;
+}
+.post {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+button {
+    cursor: pointer;
+    margin-right: 5px;
+}
+.edit-mode .edit-buttons {
+    display: block;
+}
+.edit-mode .edit {
+    display: none;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="userpage.css">
+    <script src="userpage.js"></script>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Our Space</h1>
+        <button class="edit" onclick="toggleEdit()">Edit</button>
+        <div class="edit-buttons" style="display: none;">
+            <button onclick="saveChanges()">Save</button>
+            <button onclick="discardChanges()">Discard</button>
+        </div>
+    </div>
+
+    <div class="profile">
+        <div class="profile-pic" id="profilePic"></div>
+        <div class="profile-info">
+            <h2 id="username">Username</h2>
+            <textarea id="bioInput" class="bio" placeholder="Add bio here"></textarea>
+            <input type="color" id="colorPicker" style="display: none;" onchange="changeColor()">
+        </div>
+    </div>
+
+    <div class="posts">
+        <h2>Posts</h2>
+        <div class="post">
+            <h3>Post 1</h3>
+            <p>This is the content of your post.</p>
+            <button>Reply</button>
+        </div>
+        <div class="post">
+            <h3>Post 2</h3>
+            <p>This is another post content.</p>
+            <button>Reply</button>
+        </div>
+    </div>
+
+</body>
+</html>
