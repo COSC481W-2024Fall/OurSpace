@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    
     const db = firebase.firestore();
 
     const postForm = document.getElementById('postForm');
@@ -25,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
             
             if (postContent && userId) {
                 try {
-                    // Add the post to Firestore
-                    const postRef = await db.collection('posts').add({
+                    // Add the post to the user's posts sub-collection
+                    const userRef = db.collection('users').doc(userId);
+                    await userRef.collection('posts').add({
                         content: postContent,
-                        userId: userId,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
