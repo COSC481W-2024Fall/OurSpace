@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="userpage.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="./firebaseConfig.js"></script>
+    <script src="fetchUserDataProfile.js" defer></script>
+    <script src="userpage.js" defer></script>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Our Space</h1>
+        <div class="button-container">
+            <button onclick="location.href='homepage.html'" id="homeButton">Home</button>
+            <button id="addPostButton">Add Post</button>
+            <button id="addFriendButton">Add Friend</button>
+            <button class="edit" id="editButton" onclick="toggleEdit()">Edit</button>
+            <button id="saveButton" style="display: none;" onclick="saveChanges()">Save</button>
+            <button id="discardButton" style="display: none;" onclick="discardChanges()">Discard</button>
+            <button id="signOutButton" onclick="signOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <div class="profile">
+        <div class="profile-pic" id="profilePic"></div>
+        <div class="profile-info">
+            <h2 id="username">Username</h2> 
+            <div id="bioDisplay">No bio available</div>
+            <textarea id="bioInput" class="bio" placeholder="Add bio here" style="display: none;"></textarea>
+            <input type="color" id="colorPicker" style="display: none;">
+        </div>
+    </div>
+
+    <div class="posts">
+        <h2 style="color: white;">Posts</h2>
+        <div class="post">
+            <h3>Post 1</h3>
+            <p>This is the content of your post.</p>
+            <button>Reply</button>
+        </div>
+        <div class="post">
+            <h3>Post 2</h3>
+            <p>This is another post content.</p>
+            <button>Reply</button>
+        </div>
+    </div>
+
+</body>
+</html>
