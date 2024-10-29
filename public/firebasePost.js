@@ -9,49 +9,50 @@ document.addEventListener('DOMContentLoaded', function () {
         measurementId: "G-T3YWVB2JGV"
     };
     
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    const postForm = document.getElementById('postForm');
-    if (postForm) {
-        postForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            
-            const postContent = document.getElementById('postContent').value;
-            const userId = localStorage.getItem('loggedInUserId'); // Retrieve the logged-in user ID
-            
-            if (postContent && userId) {
-                try {
-                    // Add the post to the user's posts sub-collection
-                    const userRef = db.collection('users').doc(userId);
-                    await userRef.collection('posts').add({
-                        content: postContent,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    alert("Post created successfully!");
-                    document.getElementById('postContent').value = '';  // Clear the form
-
-                    // Immediately add the post to the DOM without refreshing the page
-                    const newPost = {
-                        content: postContent,
-                        userId: userId,
-                        createdAt: new Date()  // Use the current date until the Firestore timestamp syncs
-                    };
-                    addPostToDOM(newPost);  // Add the post to the DOM
-
-                } catch (error) {
-                    console.error("Error creating post:", error);
-                    alert("Error: " + error.message);
-                }
-            } else {
-                alert("Please log in and enter content to post.");
+    document.getElementById('postForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const postContent = document.getElementById('postContent').value;
+        const userEmail = localStorage.getItem('loggedInUserId');
+        
+        console.log("Attempting to add post:", postContent, "by user:", userEmail); // Debugging line
+        
+        if (postContent && userEmail) {
+            try {
+                const userRef = db.collection('users').doc(userEmail);
+                await userRef.collection('posts').add({
+                    content: postContent,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                console.log("Post successfully added to Firestore!"); // Success message
+                alert("Post created successfully!");
+                document.getElementById('postContent').value = ''; // Clear the form
+                
+                // Update DOM immediately
+                const newPost = {
+                    content: postContent,
+                    userEmail: userEmail,
+                    createdAt: new Date()
+                };
+                addPostToDOM(newPost);
+    
+            } catch (error) {
+                console.error("Error creating post:", error);
+                alert("Error: " + error.message);
             }
-        });
-    }
-
+        } else {
+            alert("Please log in and enter content to post.");
+        }
+    });
+    
     loadPosts();  // Load existing posts on page load
 
     // Function to add a post to the DOM
@@ -60,9 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const postElement = document.createElement('div');
         postElement.classList.add('post');
 
-        // Fetch the username from Firestore based on userId
-        db.collection('users').doc(post.userId).get().then((userDoc) => {
-            const username = userDoc.data().username;
+        // Fetch the username from Firestore based on userEmail
+        db.collection('users').doc(post.userEmail).get().then((userDoc) => {
+            const username = userDoc.data().username || "Unknown User";
 
             // Create a post display
             postElement.innerHTML = `
@@ -71,6 +72,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 <small>${post.createdAt.toLocaleString()}</small>
             `;
             postsContainer.prepend(postElement);  // Add the new post to the top of the container
+        }).catch(error => {
+            console.error("Error fetching username:", error);
         });
+    }
+
+    // Load posts for the currently logged-in user
+    async function loadPosts() {
+        const userEmail = localStorage.getItem('loggedInUserId');
+        if (userEmail) {
+            try {
+                const userPosts = await db.collection('users').doc(userEmail).collection('posts')
+                    .orderBy("createdAt", "desc")
+                    .get();
+
+                userPosts.forEach(doc => {
+                    addPostToDOM({
+                        content: doc.data().content,
+                        userEmail: userEmail,
+                        createdAt: doc.data().createdAt.toDate()
+                    });
+                });
+            } catch (error) {
+                console.error("Error loading posts:", error);
+            }
+        }
     }
 });

@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-    
+            
             try {
                 const userCredential = await auth.signInWithEmailAndPassword(username, password);
                 const user = userCredential.user;
-    
-                localStorage.setItem('loggedInUserId', user.uid); // use user.uid
+                
+                localStorage.setItem('loggedInUserId', username); // use user.uid
                 window.location.href = 'homepage.html';
             } catch (error) {
                 console.error("Error logging in:", error);

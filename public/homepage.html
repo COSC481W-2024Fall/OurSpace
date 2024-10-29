@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Firebase SDKs -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <!-- Your custom scripts -->
+    <script src="firebasePost.js"></script>
+    <script src="displayPost.js"></script>
     <title>OurSpace</title>
     <style>
         body {
@@ -139,7 +147,7 @@
             <div class="post-form">
                 <form id="postForm">
                     <textarea id="postContent" rows="4" placeholder="What's on your mind?" required></textarea>
-                    <button type="submit" class="post-btn">Post</button>
+                    <button onclick="document.getElementById('postForm').scrollIntoView();">Add Post</button>
                 </form>
             </div>
             
@@ -160,12 +168,6 @@
             </ul>
         </div>
     </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <script src="displayPost.js"></script>
-    <script src="firebasePost.js"></script>
 
 </body>
 </html>
