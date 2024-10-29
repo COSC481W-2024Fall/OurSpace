@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Profile - OurSpace</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="friendprofile.js" defer></script>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: darkmagenta; 
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 55px;
+            color: steelblue;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white; 
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 100px orange; 
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ccc; 
+            margin-right: 20px;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        #username {
+            font-size: 24px;
+            color: darkmagenta;
+        }
+
+        .bio {
+            margin-top: 5px;
+            font-style: italic;
+            color: rgb(132, 9, 132);
+            display: block;
+            text-align: left; 
+        }
+
+        .sign-out-btn {
+            margin-left: auto;
+        }
+
+        .bio-container {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 20px;
+        }
+
+        .bio-area {
+            background-color: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 100px orange; 
+            width: 100%; 
+            max-width: 700px; 
+        }
+
+        .posts {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 20px;
+        }
+
+        .post {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            width: 100%; 
+            max-width: 600px; 
+        }
+
+        button {
+            cursor: pointer;
+            margin-right: 5px;
+            background-color: darkmagenta;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 onclick="window.location.href='homepage.html';" style="cursor: pointer;">OurSpace</h1>
+        <div class="sign-out-btn">
+            <button onclick="signOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <div class="profile">
+        <div class="profile-pic"></div>
+        <div class="profile-info">
+            <h2 id="username"></h2>
+            <span class="bio" id="bio"></span>
+        </div>
+        <button id="addFriendButton" style="display: inline-block;">Add Friend</button> <!-- Add Friend Button -->
+    </div>
+
+    <div class="bio-container">
+        <div class="bio-area">
+            <h3>Friend's Posts</h3>
+            <div id="friendPosts" class="posts"></div>
+        </div>
+    </div>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCppKyFDiC6qSWoS25mP4f-7DUfJ05BWl8",
+            authDomain: "ourspace-9703c.firebaseapp.com",
+            projectId: "ourspace-9703c",
+            storageBucket: "ourspace-9703c.appspot.com",
+            messagingSenderId: "829335148222",
+            appId: "1:829335148222:web:94ebc43b2d3ea171e1b0ef",
+            measurementId: "G-T3YWVB2JGV"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function signOut() {
+            auth.signOut().then(() => {
+                console.log("User signed out successfully.");
+                window.location.href = 'login.html'; 
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+
+            if (!userId) {
+                alert("No user ID provided.");
+                return;
+            }
+
+            // Fetch friend profile info
+            const userDoc = await db.collection('users').doc(userId).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                document.getElementById('username').innerText = userData.username || "Username not found";
+                document.getElementById('bio').innerText = userData.bio || "No bio available";
+            } else {
+                alert("User not found.");
+            }
+
+            // Fetch friend posts
+            const postsContainer = document.getElementById('friendPosts');
+            const postsSnapshot = await db.collection('users').doc(userId).collection('posts').get();
+            postsSnapshot.forEach(doc => {
+                const postData = doc.data();
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `<h3>${postData.title || "Untitled"}</h3><p>${postData.content || ""}</p>`;
+                postsContainer.appendChild(postElement);
+            });
+        });
+    </script>
+</body>
+</html>
