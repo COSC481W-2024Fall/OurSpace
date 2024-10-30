@@ -8,6 +8,8 @@ let isEditing = false;
 let originalBio = "";
 let originalColor = "#ccc"; 
 
+//this function detects if user is editing their profile
+//if they are editing then the options to edit will appear
 function toggleEdit() {
     const bioInput = document.getElementById('bioInput');
     const bioDisplay = document.getElementById('bioDisplay');
@@ -47,6 +49,7 @@ function toggleEdit() {
     }
 }
 
+// This function will save the changes user made
 async function saveChanges() {
     const bioInput = document.getElementById('bioInput');
     const bioDisplay = document.getElementById('bioDisplay');
@@ -70,6 +73,7 @@ async function saveChanges() {
     }
 }
 
+// this function will get rid of the changes
 function discardChanges() {
     const bioInput = document.getElementById('bioInput');
     bioInput.value = originalBio; 
@@ -77,6 +81,8 @@ function discardChanges() {
     toggleEdit(); 
 }
 
+
+// this will sign the user out
 function signOut() {
     auth.signOut().then(() => {
         console.log("User signed out successfully.");
@@ -86,6 +92,8 @@ function signOut() {
     });
 }
 
+
+// displays the correct profile information
 document.addEventListener('DOMContentLoaded', async function () {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
