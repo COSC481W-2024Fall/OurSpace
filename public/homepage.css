@@ -62,13 +62,12 @@ body {
     margin-right: 20px;
 }
 .post {
-    background-color: white; /* White for Post box */
-    color: darkmagenta;
+    background-color: darkmagenta; /* DarkMagenta for Post box */
+    color: white;
     border: none;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow */
 }
 .friends-list {
     background-color: darkmagenta; /* Darkmagenta for Friends List box */
