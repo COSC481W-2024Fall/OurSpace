@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Firebase SDKs -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <!-- Your custom scripts -->
+    <script src="firebasePost.js"></script>
+    <script src="displayPost.js"></script>
     <title>OurSpace</title>
     <link rel="stylesheet" href="homepage.css">
     
@@ -15,11 +23,14 @@
         <div class="menu">
             <button>Add Post</button>
             <button>My Profile</button>
+            <button>Add Friend</button>
+            <button onclick="window.location.href='EditUserPage.html'" id="myprofilebutton">My Profile</button>
         </div>
 
         <!-- Sign Out Button -->
         <div class="sign-out-btn">
             <button onclick="signOut()">Sign Out</button>
+            <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
         </div>
     </div>
 
@@ -33,11 +44,20 @@
     <div class="content">
         <!-- Posts Section -->
         <div class="posts">
-            <div class="post">
-                <h2>Post 1</h2>
-                <p>This is the content of the first post.</p>
-                <button>Reply</button>
+            
+            <!-- Post Creation Form -->
+            <div class="post-form">
+                <form id="postForm">
+                    <textarea id="postContent" rows="4" placeholder="What's on your mind?" required></textarea>
+                    <button onclick="document.getElementById('postForm').scrollIntoView();">Add Post</button>
+                </form>
             </div>
+            
+            <!-- Existing Posts -->
+            <div id="postsContainer">
+                <!-- Posts will be loaded here dynamically -->
+            </div>
+
         </div>
 
         <!-- Friends List -->
@@ -51,10 +71,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <!-- JavaScript File -->
     <script src="homepage.js"></script>
 </body>
