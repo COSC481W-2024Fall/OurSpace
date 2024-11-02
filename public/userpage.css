@@ -1,0 +1,129 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: darkmagenta; 
+    margin: 0;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: white; 
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 100px orange; 
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc; 
+    margin-right: 20px;
+}
+
+.profile-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+#username {
+    font-size: 24px;
+    color: darkmagenta;
+}
+
+.bio {
+    margin-top: 5px;
+    font-style: italic;
+    color: rgb(132, 9, 132);
+    display: block;
+    text-align: left; 
+}
+
+.edit-buttons {
+    display: none;
+}
+
+textarea {
+    width: 100%; 
+    padding: 12px;
+    border: 1px solid rgb(249, 176, 148);
+    border-radius: 5px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+#loginbutton, #signupbutton {
+    background-color: darkmagenta;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+#loginbutton:hover, #signupbutton:hover {
+    background-color: orange;
+}
+
+
+.bio-container {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-top: 20px;
+}
+
+.bio-area {
+    background-color: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 100px orange; 
+    width: 100%; 
+    max-width: 700px; 
+}
+
+.posts {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-top: 20px;
+}
+
+.post {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%; 
+    max-width: 600px; 
+}
+
+button {
+    cursor: pointer;
+    margin-right: 5px;
+    background-color: darkmagenta;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: orange;
+}
