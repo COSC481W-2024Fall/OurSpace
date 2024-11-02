@@ -12,121 +12,15 @@
     <script src="firebasePost.js"></script>
     <script src="displayPost.js"></script>
     <title>OurSpace</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #4682b4; /* SteelBlue background */
-        }
-        .navbar {
-            background-color: #ffa500; /* Orange color for top box */
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-        .navbar h1 {
-            margin: 0;
-            padding: 0;
-            font-size: 3em; /* Bigger font for the logo */
-            display: inline-block;
-            color: darkmagenta; /* DarkMagenta for OurSpace */
-        }
-        .menu {
-            display: inline-block;
-            margin-left: 20px;
-        }
-        .menu button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            background-color: darkmagenta; /* DarkMagenta button */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .menu button:hover {
-            background-color: #4682b4; /* SteelBlue on hover */
-        }
-        .sign-out-btn {
-            position: absolute;
-            top: 50%;
-            right: 50px;
-            transform: translateY(-50%); /* Center vertically */
-        }
-        .sign-out-btn button {
-            padding: 10px 20px;
-            background-color: darkmagenta; /* DarkMagenta for button */
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .sign-out-btn button:hover {
-            background-color: #4682b4; /* SteelBlue on hover */
-        }
-        .content {
-            display: flex;
-            margin: 20px;
-        }
-        .posts {
-            flex: 3;
-            margin-right: 20px;
-        }
-        .post {
-            background-color: darkmagenta; /* DarkMagenta for Post box */
-            color: white;
-            border: none;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-        .friends-list {
-            background-color: darkmagenta; /* DarkMagenta for Friends List box */
-            color: white;
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .friends-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .friends-list li {
-            padding: 5px 0;
-        }
-        .post-form {
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 10px;
-            resize: none;
-        }
-        button.post-btn {
-            background-color: darkmagenta;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button.post-btn:hover {
-            background-color: #4682b4;
-        }
-    </style>
+    <link rel="stylesheet" href="homepage.css">
+    
 </head>
 <body>
 
     <!-- Navbar -->
     <div class="navbar">
-        <h1>OurSpace</h1>
+        <h1 onclick="window.location.href='homepage.html'">OurSpace</h1>
         <div class="menu">
-            <!-- Menu Items as Buttons -->
-            <button onclick="window.location.reload();">Home</button> <!-- Home button reloads the page -->
             <button>Add Post</button>
             <button>Add Friend</button>
             <button onclick="window.location.href='EditUserPage.html'" id="myprofilebutton">My Profile</button>
@@ -136,6 +30,12 @@
         <div class="sign-out-btn">
             <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
         </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for friends..." oninput="searchFriends()">
+        <div class="dropdown" id="searchResults"></div>
     </div>
 
     <!-- Main Content -->
@@ -169,5 +69,7 @@
         </div>
     </div>
 
+    <!-- JavaScript File -->
+    <script src="homepage.js"></script>
 </body>
 </html>

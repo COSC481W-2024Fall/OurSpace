@@ -31,9 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     content: postContent,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                console.log("Post successfully added to Firestore!"); // Success message
-                alert("Post created successfully!");
                 document.getElementById('postContent').value = ''; // Clear the form
                 
                 // Update DOM immediately
