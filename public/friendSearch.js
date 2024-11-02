@@ -1,5 +1,3 @@
-// friendSearch.js
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCppKyFDiC6qSWoS25mP4f-7DUfJ05BWl8",

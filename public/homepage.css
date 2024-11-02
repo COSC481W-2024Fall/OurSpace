@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: darkmagenta; /* DarkMagenta background */
+}
+.navbar {
+    background-color: #ffa500; /* Orange color for top box */
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+.navbar h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 4em; /* Bigger font for the logo */
+    display: inline-block;
+    color: steelblue; /* DarkMagenta for OurSpace */
+    cursor: pointer; /* Make the title clickable */
+}
+.menu {
+    display: inline-block;
+    margin-left: 20px;
+}
+.menu button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: darkmagenta; /* DarkMagenta button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.menu button:hover {
+    background-color: steelblue;
+}
+.sign-out-btn {
+    position: absolute;
+    top: 50%;
+    right: 50px;
+    transform: translateY(-50%); /* Center vertically */
+}
+.sign-out-btn button {
+    padding: 10px 20px;
+    background-color: darkmagenta; /* DarkMagenta for button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.sign-out-btn button:hover {
+    background-color: steelblue; 
+}
+.content {
+    display: flex;
+    margin: 20px;
+}
+.posts {
+    flex: 3;
+    margin-right: 20px;
+}
+.post {
+    background-color: white; /* White for Post box */
+    color: darkmagenta;
+    border: none;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow */
+}
+.friends-list {
+    background-color: darkmagenta; /* Darkmagenta for Friends List box */
+    color: white;
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+}
+.friends-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+.friends-list li {
+    padding: 5px 0;
+}
+.search-bar {
+    position: absolute; /* Fix to top left corner */
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+.search-bar input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid darkmagenta;
+    border-radius: 5px;
+}
+.dropdown {
+    position: absolute;
+    top: 50px; /* Adjust based on your design */
+    left: 20px;
+    background-color: white;
+    border: 1px solid darkmagenta;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000; /* Ensure it appears above other elements */
+    display: none; /* Hidden by default */
+}
+.dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+.dropdown div:hover {
+    background-color: steelblue; /* Steelblue on hover */
+    color: white; /* Change text color on hover */
+}
+.search-results {
+    margin-top: 20px;
+    text-align: center;
+}
+button {
+    background-color: darkmagenta;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: orange;
+}
