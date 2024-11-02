@@ -3,9 +3,6 @@ module.exports = {
     "@testing-library/jest-dom",
     "<rootDir>/jest.setup.js"
   ],
-  transform: {
-    "^.+\\.js$": "babel-jest"
-  },
   transformIgnorePatterns: [
     "node_modules/(?!@firebase)",
     "node_modules/(?!@firebase|node-fetch)"
