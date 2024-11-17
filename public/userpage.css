@@ -127,3 +127,49 @@ button {
 button:hover {
     background-color: orange;
 }
+
+#imagePreview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; 
+    background-color: #ccc; 
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; 
+    background-color: #ccc; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#profilePic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-size: cover;    
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.crop-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.crop-container img {
+    max-width: 100%;
+    border: 1px solid #ddd;
+}
+
+#saveCroppedImage {
+    margin-top: 10px;
+}
+.cropper-crop-box {
+    border-radius: 50%; 
+    overflow: hidden; 
+}
