@@ -40,8 +40,6 @@ function toggleEdit() {
         saveButton.style.display = 'inline-block';
         discardButton.style.display = 'inline-block';
         cropContainer.style.display = 'block';
-        document.getElementById("addPostButton").style.display = 'none';
-        document.getElementById("addFriendButton").style.display = 'none';
         document.getElementById("homeButton").style.display = 'none';
         document.getElementById("signOutButton").style.display = 'none';
 
@@ -56,8 +54,6 @@ function toggleEdit() {
         document.getElementById('editButton').style.display = 'inline-block';
         saveButton.style.display = 'none';
         discardButton.style.display = 'none';
-        document.getElementById("addPostButton").style.display = 'inline-block';
-        document.getElementById("addFriendButton").style.display = 'inline-block';
         document.getElementById("homeButton").style.display = 'inline-block';
         document.getElementById("signOutButton").style.display = 'inline-block';
 
