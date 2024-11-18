@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Profile - OurSpace</title>
+    <link rel="stylesheet" href="friendprofile.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="friendprofile.js" defer></script>
+
+</head>
+<body>
+    <div class="header">
+        <h1 onclick="window.location.href='homepage.html';" style="cursor: pointer;">OurSpace</h1>
+        <div class="sign-out-btn">
+            <button onclick="signOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <div class="profile">
+        <div class="profile-pic"></div>
+        <div class="profile-info">
+            <h2 id="username"></h2>
+            <span class="bio" id="bio"></span>
+        </div>
+        <button id="addFriendButton" style="display: inline-block;">Add Friend</button> <!-- Add Friend Button -->
+    </div>
+
+    <div class="bio-container">
+        <div class="bio-area">
+            <h3>Friend's Posts</h3>
+            <div id="friendPosts" class="posts"></div>
+        </div>
+    </div>
+</body>
+</html>
