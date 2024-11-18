@@ -6,6 +6,11 @@ body {
     padding: 20px;
 }
 
+h1  {
+    color: orange;
+    font-size: 4em;
+}
+
 form {
     background-color: white;
     color: rgb(132, 9, 132);

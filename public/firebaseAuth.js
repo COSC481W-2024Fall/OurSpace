@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const user = userCredential.user;
 
             const userData = { name: name, username: username, bio: "", profilePic: "", posts: ""}; 
-            await userRef.set(userData);
 
+            await userRef.set(userData);
             console.log("User document created:", userData);
 
             window.location.href = 'login.html';
