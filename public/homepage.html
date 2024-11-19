@@ -19,18 +19,18 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <h1 onclick="window.location.href='homepage.html'">OurSpace</h1>
+        <h1 onclick="window.location.href='homepage.html'">
+            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 80px;">
+        </h1>
         <div class="menu">
-            <button>Add Post</button>
-            <button>Add Friend</button>
             <button onclick="window.location.href='EditUserPage.html'" id="myprofilebutton">My Profile</button>
         </div>
-
         <!-- Sign Out Button -->
         <div class="sign-out-btn">
             <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
         </div>
     </div>
+
 
     <!-- Search Bar -->
     <div class="search-bar">
@@ -58,13 +58,12 @@
 
         </div>
 
-        <!-- Friends List -->
+        <!-- Friends List Section -->
         <div class="friends-list">
-            <h3>Friends List</h3>
+            <!-- Clickable title for loading the friends list -->
+            <h3 class="friends-list-title" style="cursor: pointer;">Show Friends List</h3>
             <ul>
-                <li>Friend 1</li>
-                <li>Friend 2</li>
-                <li>Friend 3</li>
+                <!-- Friends will be dynamically added here -->
             </ul>
         </div>
     </div>

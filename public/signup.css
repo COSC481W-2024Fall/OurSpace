@@ -6,9 +6,9 @@ body {
     padding: 20px;
 }
 
-h1  {
-    color: orange;
-    font-size: 4em;
+h1 img {
+    height: 80px;
+    width: auto;
 }
 
 form {

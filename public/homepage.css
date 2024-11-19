@@ -18,6 +18,10 @@ body {
     color: steelblue; /* DarkMagenta for OurSpace */
     cursor: pointer; /* Make the title clickable */
 }
+.navbar h1 img {
+    height: 80px; /* Adjust the logo height */
+    width: auto;
+}
 .menu {
     display: inline-block;
     margin-left: 20px;
