@@ -38,15 +38,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
+            // Initialize userData before using it
+            const userData = { 
+                name: name, 
+                username: username, 
+                bio: "", 
+                profileColor: "#ccc", 
+                posts: "", 
+                friends: [] 
+            };
+
+            // Create the user and store user data in Firestore
             const userCredential = await auth.createUserWithEmailAndPassword(username, password);
             await userRef.set(userData);
             const user = userCredential.user;
 
-            const userData = { name: name, username: username, bio: "", profileColor: "#ccc" , posts: "", friends: []}; 
-            await userRef.set(userData);
             console.log("User document created:", userData);
 
-            window.location.href = 'login.html';
+            window.location.href = 'login.html'; // Redirect after successful sign-up
         } catch (error) {
             console.error("Error creating user:", error);
             alert("Error: " + error.message);
