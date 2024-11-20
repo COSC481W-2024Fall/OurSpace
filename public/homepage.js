@@ -47,7 +47,7 @@ async function searchFriends() {
 
                 // Handle click on a friend result
                 friendDiv.onclick = () => {
-                    if (confirm(`Do you want to add ${data.username} as a friend?`)) {
+                    if (confirm(`Do you want to add ${data.username} as a friend?\nIf you just like to go to the friends profile hit cancel`)) {
                         addFriend(data.username, doc.id);  // Add friend if confirmed
                     } else {
                         window.location.href = `friendsprofile.html?userId=${doc.id}`; // Go to profile if not
@@ -80,19 +80,26 @@ async function addFriend(friendUsername, friendId) {
         return;
     }
 
-    const userRef = db.collection('users').doc(currentUser.uid);
+    const userRef = db.collection('users').doc(currentUser.email.split('@')[0]); // Use username (email before '@') as doc ID
     const userDoc = await userRef.get();
     const userData = userDoc.data();
 
+    // Check if the 'friends' field exists, if not, initialize it as an empty array
+    if (!userData.friends) {
+        userData.friends = [];  // Initialize friends as an empty array if not present
+    }
+
     // Check if the user already has this friend in their list
-    if (userData.friends && userData.friends.includes(friendId)) {
+    if (userData.friends.includes(friendId)) {
         alert(`${friendUsername} is already in your friends list.`);
         return;
     }
 
     // If the user doesn't already have the friend, add the friend to the list
-    const updatedFriendsList = userData.friends ? [...userData.friends, friendId] : [friendId];
-    await userRef.update({ friends: updatedFriendsList });
+    userData.friends.push(friendId);
+
+    // Update the user's friends list in Firestore
+    await userRef.update({ friends: userData.friends });
 
     alert(`${friendUsername} has been added to your friends list.`);
 
@@ -100,16 +107,18 @@ async function addFriend(friendUsername, friendId) {
     displayUpdatedFriendsList();
 }
 
+
 // Function to display friends list
 async function displayFriends(friendIds) {
     const friendsListContainer = document.querySelector('.friends-list ul');
     friendsListContainer.innerHTML = ''; // Clear previous friends list
 
-    if (friendIds.length === 0) {
+    // If the friends array is empty, show a message
+    if (friendIds && friendIds.length === 0) {
         const noFriendsMessage = document.createElement('li');
         noFriendsMessage.textContent = "You have no friends yet.";
         friendsListContainer.appendChild(noFriendsMessage);
-    } else {
+    } else if (friendIds) {
         // Fetch friend data from Firebase for each friendId
         for (const friendId of friendIds) {
             const friendRef = db.collection('users').doc(friendId);
@@ -136,21 +145,35 @@ async function displayUpdatedFriendsList() {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-        const userRef = db.collection('users').doc(currentUser.uid);
+        const username = currentUser.email.split('@')[0]; // Use username based on email (e.g., 'tracy' from 'tracy@gmail.com')
+        const userRef = db.collection('users').doc(username); // Retrieve the document by username
         const userDoc = await userRef.get();
-        const userData = userDoc.data();
 
-        if (userData && userData.friends) {
-            displayFriends(userData.friends);  // Call the function to display updated friends list
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            console.log("User Data:", userData);  // Check user data
+
+            if (userData && userData.friends) {
+                console.log("Friends List:", userData.friends);  // Log friends list
+                
+                // Check and display friends
+                if (userData.friends.length === 0) {
+                    alert("You currently have no friends.");
+                }
+                displayFriends(userData.friends);
+            } else {
+                alert("No friends field in user data.");
+            }
         } else {
-            // If no friends list exists, show a message
-            const friendsListContainer = document.querySelector('.friends-list ul');
-            const noFriendsMessage = document.createElement('li');
-            noFriendsMessage.textContent = "You have no friends yet.";
-            friendsListContainer.appendChild(noFriendsMessage);
+            console.log("User document does not exist for:", username);  // Log if the document doesn't exist
+            alert("User document does not exist. Please try again.");
         }
+    } else {
+        console.log("No user is logged in.");
+        alert("Please log in first.");
     }
 }
+
 
 // Display friends list when the "Show Friends List" title is clicked
 function showFriendsList() {

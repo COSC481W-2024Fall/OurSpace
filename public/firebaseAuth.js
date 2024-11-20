@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 bio: "", 
                 profileColor: "#ccc", 
                 posts: "", 
-                friends: [] 
+                friends: [] // Ensure friends is always an array
             };
 
             // Create the user and store user data in Firestore

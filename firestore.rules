@@ -2,23 +2,8 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Rule for users' profiles
     match /users/{userId} {
-      // Only allow authenticated users to read data
-      allow read: if request.auth != null;
-      
-      // Only the user can write their profile data
-      allow write: if request.auth.uid == userId;
-
-      // Allow authenticated users to update their friends list (write to the 'friends' field)
-      allow update: if request.auth.uid == userId && request.resource.data.keys().hasOnly(['friends']);
-    }
-
-    // General rule for all other collections
-    match /{document=**} {
-      allow read: if request.auth != null;  // Allow read access only if the user is authenticated
-      allow write: if false;  // Prevent write access to other collections
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
