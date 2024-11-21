@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Firebase SDKs -->
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <!-- Your custom scripts -->
     <script src="firebasePost.js"></script>
     <script src="displayPost.js"></script>
+    <script src="homepage.js" defer></script>
     <title>OurSpace</title>
     <link rel="stylesheet" href="homepage.css">
-    
 </head>
 <body>
 
@@ -30,7 +30,6 @@
             <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
         </div>
     </div>
-
 
     <!-- Search Bar -->
     <div class="search-bar">
@@ -55,7 +54,6 @@
             <div id="postsContainer">
                 <!-- Posts will be loaded here dynamically -->
             </div>
-
         </div>
 
         <!-- Friends List Section -->
@@ -68,7 +66,16 @@
         </div>
     </div>
 
-    <!-- JavaScript File -->
-    <script src="homepage.js"></script>
+    <!-- Friend Action Modal -->
+    <div id="friendActionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <button id="modalAddFriendBtn" onclick="addFriend()">Add Friend</button>
+            <button id="modalViewProfileBtn" onclick="viewProfile()">View Profile</button>
+        </div>
+    </div>
+    
 </body>
 </html>
