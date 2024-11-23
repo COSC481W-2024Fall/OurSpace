@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Firebase SDKs -->
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <!-- Your custom scripts -->
     <script src="firebasePost.js"></script>
+    <script src="homepage.js"></script>
     <title>OurSpace</title>
     <link rel="stylesheet" href="homepage.css">
-    
 </head>
 <body>
 
     <!-- Navbar -->
     <div class="navbar">
-        <h1 onclick="window.location.href='homepage.html'">OurSpace</h1>
+        <h1 onclick="window.location.href='homepage.html'">
+            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 80px;">
+        </h1>
         <div class="menu">
-            <button>Add Post</button>
-            <button>Add Friend</button>
             <button onclick="window.location.href='EditUserPage.html'" id="myprofilebutton">My Profile</button>
         </div>
-
         <!-- Sign Out Button -->
         <div class="sign-out-btn">
             <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
@@ -54,21 +53,28 @@
             <div id="postsContainer">
                 <!-- Posts will be loaded here dynamically -->
             </div>
-
         </div>
 
-        <!-- Friends List -->
+        <!-- Friends List Section -->
         <div class="friends-list">
-            <h3>Friends List</h3>
+            <!-- Clickable title for loading the friends list -->
+            <h3 class="friends-list-title" style="cursor: pointer;">Show Friends List</h3>
             <ul>
-                <li>Friend 1</li>
-                <li>Friend 2</li>
-                <li>Friend 3</li>
+                <!-- Friends will be dynamically added here -->
             </ul>
         </div>
     </div>
 
-    <!-- JavaScript File -->
-    <script src="homepage.js"></script>
+    <!-- Friend Action Modal -->
+    <div id="friendActionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <button id="modalAddFriendBtn" onclick="addFriend()">Add Friend</button>
+            <button id="modalViewProfileBtn" onclick="viewProfile()">View Profile</button>
+        </div>
+    </div>
+    
 </body>
 </html>
