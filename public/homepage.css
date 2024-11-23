@@ -78,8 +78,8 @@ body {
 }
 
 .post {
-    background-color: rgb(224, 137, 23);
-    color: black;
+    background-color: white;
+    color: darkmagenta;
     border: none;
     padding: 20px;
     margin-bottom: 20px;

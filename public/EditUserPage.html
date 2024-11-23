@@ -11,6 +11,7 @@
     <script src="./firebaseConfig.js"></script>
     <script src="fetchUserDataProfile.js" defer></script>
     <script src="userpage.js" defer></script>
+    <script src="displayPost.js"></script>
 </head>
 <body>
 
@@ -38,20 +39,10 @@
             <input type="color" id="colorPicker" style="display: none;">
         </div>
     </div>
-
-    <div class="posts">
-        <h2 style="color: white;">Posts</h2>
-        <div class="post">
-            <h3>Post 1</h3>
-            <p>This is the content of your post.</p>
-            <button>Reply</button>
-        </div>
-        <div class="post">
-            <h3>Post 2</h3>
-            <p>This is another post content.</p>
-            <button>Reply</button>
-        </div>
+        <div id="postsContainer">
+            <!-- Posts will be loaded here dynamically -->
     </div>
+</div>
 
 </body>
 </html>

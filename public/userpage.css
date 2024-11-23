@@ -99,23 +99,21 @@ textarea {
     width: 100%; 
     max-width: 700px; 
 }
-
 .posts {
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     margin-top: 20px;
 }
-
 .post {
     background-color: white;
     padding: 15px;
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 9px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: left;
-    width: 100%; 
-    max-width: 600px; 
+    width: 95%; 
+    
 }
 
 button {
