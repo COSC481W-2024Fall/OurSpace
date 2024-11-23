@@ -38,11 +38,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const userData = { name: name, username: username, bio: "", profilePic: "", posts: "", friends: []}; 
+            
             // Create the user and store user data in Firestore
             const userCredential = await auth.createUserWithEmailAndPassword(username, password);
-            await userRef.set(userData);
             const user = userCredential.user;
+            const userData = { name: name,
+                 username: username, 
+                 bio: "",
+                profilePic: "", 
+                posts: "", 
+                friends: []}; 
 
             await userRef.set(userData);
             console.log("User document created:", userData);
