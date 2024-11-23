@@ -19,32 +19,62 @@ const auth = firebase.auth(); // Initialize auth
 
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userId');
+    const userId = urlParams.get('userId'); // The profile user ID from the URL
 
     if (!userId) {
         alert("No user ID provided.");
         return;
     }
 
-    // Fetch friend profile info
+    let userData; // Define userData outside the if block for broader scope
+
+    // Fetch and display profile info
     const userDoc = await db.collection('users').doc(userId).get();
     if (userDoc.exists) {
-        const userData = userDoc.data();
+        userData = userDoc.data();
         document.getElementById('username').innerText = userData.username || "Username not found";
         document.getElementById('bio').innerText = userData.bio || "No bio available";
     } else {
         alert("User not found.");
+        return;
     }
 
-    // Fetch friend posts
-    const postsContainer = document.getElementById('friendPosts');
-    const postsSnapshot = await db.collection('users').doc(userId).collection('posts').get();
-    postsSnapshot.forEach(doc => {
-        const postData = doc.data();
-        const postElement = document.createElement('div');
-        postElement.className = 'post';
-        postElement.innerHTML = `<h3>${postData.title || "Untitled"}</h3><p>${postData.content || ""}</p>`;
-        postsContainer.appendChild(postElement);
+    // Fetch and display user's posts
+    const postsContainer = document.getElementById('postsContainer');
+    if (!postsContainer) {
+        console.warn("postsContainer element not found.");
+        return;
+    }
+
+    postsContainer.innerHTML = ''; // Clear container before loading posts
+
+    // Access the user's posts sub-collection
+    db.collection('users').doc(userId).collection('posts').orderBy('createdAt', 'desc').get()
+    .then((postsSnapshot) => {
+        if (postsSnapshot.empty) {
+            console.log("No posts available for this user.");
+            return;
+        }
+
+        postsSnapshot.forEach((postDoc) => {
+            const post = postDoc.data();
+
+            // Ensure required fields are present
+            if (post.content && post.createdAt) {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+                postElement.innerHTML = `
+                    <h4>${userData.username || "Unknown User"}</h4>
+                    <p>${post.content}</p>
+                    <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                `;
+                postsContainer.appendChild(postElement);
+            } else {
+                console.warn("Post is missing content or createdAt fields:", post);
+            }
+        });
+    }).catch((error) => {
+        console.error("Error fetching posts:", error);
     });
 });
 
