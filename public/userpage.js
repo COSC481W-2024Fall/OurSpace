@@ -1,122 +1,197 @@
-if (typeof firebase === 'undefined') {
-    console.error("Firebase is not loaded.");
-}
+const firebaseConfig = {
+    apiKey: "AIzaSyCppKyFDiC6qSWoS25mP4f-7DUfJ05BWl8",
+    authDomain: "ourspace-9703c.firebaseapp.com",
+    projectId: "ourspace-9703c",
+    storageBucket: "ourspace-9703c.appspot.com",
+    messagingSenderId: "829335148222",
+    appId: "1:829335148222:web:94ebc43b2d3ea171e1b0ef",
+    measurementId: "G-T3YWVB2JGV"
+};
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase services
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
+
+
 let isEditing = false;
 let originalBio = "";
-let originalColor = "#ccc"; 
+let originalProfilePic = "";
+let cropper; 
 
-//this function detects if user is editing their profile
-//if they are editing then the options to edit will appear
+// Function to toggle the editing mode
 function toggleEdit() {
     const bioInput = document.getElementById('bioInput');
     const bioDisplay = document.getElementById('bioDisplay');
-    const colorPicker = document.getElementById('colorPicker');
+    const fileInput = document.getElementById('fileInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const saveButton = document.getElementById('saveButton');
+    const discardButton = document.getElementById('discardButton');
+    const cropContainer = document.querySelector('.crop-container');
 
     isEditing = !isEditing;
 
     if (isEditing) {
+        // Show edit buttons and input fields
         document.getElementById('editButton').style.display = 'none';
-        document.getElementById('addPostButton').style.display = 'none';
-        document.getElementById('addFriendButton').style.display = 'none';
-        document.getElementById('homeButton').style.display = 'none';
+        saveButton.style.display = 'inline-block';
+        discardButton.style.display = 'inline-block';
+        cropContainer.style.display = 'block';
+        document.getElementById("homeButton").style.display = 'none';
+        document.getElementById("signOutButton").style.display = 'none';
 
-        document.getElementById('saveButton').style.display = 'inline-block';
-        document.getElementById('discardButton').style.display = 'inline-block';
-
-        originalBio = bioDisplay.innerText || ""; 
-        bioInput.style.display = 'block'; 
-        bioDisplay.style.display = 'none'; 
+        bioInput.style.display = 'block';
+        bioDisplay.style.display = 'none';
         bioInput.value = originalBio;
 
-        colorPicker.style.display = 'inline'; 
-        colorPicker.disabled = false; 
+        fileInput.style.display = 'block';
+        imagePreview.style.display = 'block';
     } else {
+        // Hide edit buttons and return to normal view
         document.getElementById('editButton').style.display = 'inline-block';
-        document.getElementById('addPostButton').style.display = 'inline-block';
-        document.getElementById('addFriendButton').style.display = 'inline-block';
-        document.getElementById('homeButton').style.display = 'inline-block';
+        saveButton.style.display = 'none';
+        discardButton.style.display = 'none';
+        document.getElementById("homeButton").style.display = 'inline-block';
+        document.getElementById("signOutButton").style.display = 'inline-block';
 
-        document.getElementById('saveButton').style.display = 'none';
-        document.getElementById('discardButton').style.display = 'none';
-
-        bioInput.style.display = 'none'; 
-        bioDisplay.style.display = 'block'; 
-        colorPicker.style.display = 'none'; 
-        colorPicker.disabled = true; 
+        bioInput.style.display = 'none';
+        bioDisplay.style.display = 'block';
+        fileInput.style.display = 'none';
+        imagePreview.style.display = 'none';
+        cropContainer.style.display = 'none';
     }
 }
 
-// This function will save the changes user made
+// Handle image file selection and initialize the cropper
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            const imageURL = reader.result;
+
+            // Show preview
+            document.getElementById('imagePreview').src = imageURL;
+            document.getElementById('imageToCrop').src = imageURL;
+
+            // Initialize or reset cropper
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(document.getElementById('imageToCrop'), {
+                aspectRatio: 1, 
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 0.8,
+                scalable: true,
+                cropBoxResizable: true,
+                cropBoxMovable: true,
+                ready() {
+                    const cropBox = this.cropper.cropBox;
+                    cropBox.style.borderRadius = '50%'; 
+                    cropBox.style.overflow = 'hidden';
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Save changes to Firestore 
 async function saveChanges() {
     const bioInput = document.getElementById('bioInput');
     const bioDisplay = document.getElementById('bioDisplay');
     const username = document.getElementById('username').innerText;
-    const colorPicker = document.getElementById('colorPicker');
+    const bio = bioInput.value;
 
-    bioDisplay.innerText = bioInput.value; 
-    const selectedColor = colorPicker.value;
+    bioDisplay.innerText = bio;
+    let imageUrl = originalProfilePic; 
+
+    // If a new profile picture was selected and cropped, upload it to Firebase
+    if (cropper) {
+        const canvas = cropper.getCroppedCanvas({ width: 200, height: 200 });
+        const croppedImageUrl = canvas.toDataURL();
+        imageUrl = croppedImageUrl; 
+    }
+
+    // Update Firestore with new bio and profile picture URL
+    try {
+        if (imageUrl !== originalProfilePic) {
+            await uploadCroppedImageToFirebase(imageUrl);
+        }
+
+        await db.collection("users").doc(auth.currentUser.uid).update({
+            bio: bio,
+            profilePic: imageUrl
+        });
+
+        document.getElementById('profilePic').style.backgroundImage = `url(${imageUrl})`;
+
+        console.log("Profile updated successfully!");
+    } catch (error) {
+        console.error("Error saving profile:", error);
+    }
 
     toggleEdit();
+}
+
+// Upload cropped image to Firebase Storage
+async function uploadCroppedImageToFirebase(croppedImageUrl) {
+    const user = firebase.auth().currentUser;
+    const storageRef = firebase.storage().ref();
+    const profilePicRef = storageRef.child(`profile_pictures/${user.uid}.jpg`);
+    const response = await fetch(croppedImageUrl);
+    const blob = await response.blob();
 
     try {
-        await db.collection("users").doc(username).update({
-            bio: bioInput.value,
-            profileColor: selectedColor 
+        await profilePicRef.put(blob); 
+        const downloadUrl = await profilePicRef.getDownloadURL(); 
+
+        await firebase.firestore().collection("users").doc(user.uid).update({
+            profilePic: downloadUrl
         });
-        document.getElementById('profilePic').style.backgroundColor = selectedColor; 
-        console.log("Bio and profile color successfully updated!");
+
+        console.log("Profile picture updated successfully!");
     } catch (error) {
-        console.error("Error updating bio:", error);
+        console.error("Error uploading cropped image:", error);
     }
 }
 
-// this function will get rid of the changes
+// Discard changes
 function discardChanges() {
     const bioInput = document.getElementById('bioInput');
-    bioInput.value = originalBio; 
-    document.getElementById('colorPicker').value = originalColor; 
-    toggleEdit(); 
+    bioInput.value = originalBio;
+    document.getElementById('fileInput').value = "";  
+    document.getElementById('imagePreview').src = originalProfilePic;
+    toggleEdit();
 }
 
-
-// this will sign the user out
-function signOut() {
-    auth.signOut().then(() => {
-        console.log("User signed out successfully.");
-        window.location.href = 'login.html'; 
-    }).catch((error) => {
-        console.error("Error signing out:", error);
-    });
-}
-
-
-// displays the correct profile information
+// Load user data when page loads
 document.addEventListener('DOMContentLoaded', async function () {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             const username = user.email.split('@')[0]; 
-            const userDoc = await db.collection("users").doc(username).get();
+            const userDoc = await db.collection("users").doc(user.uid).get();
 
             if (userDoc.exists) {
                 const userData = userDoc.data();
                 document.getElementById('username').innerText = userData.username;
-                document.getElementById('bioDisplay').innerText = userData.bio || "No bio available"; 
-                const profileColor = userData.profileColor || "#ccc"; 
-                document.getElementById('colorPicker').value = profileColor; 
-                document.getElementById('profilePic').style.backgroundColor = profileColor; 
-                originalColor = profileColor; 
+                document.getElementById('bioDisplay').innerText = userData.bio || "No bio available";
+                originalProfilePic = userData.profilePic || ""; 
+                document.getElementById('profilePic').style.backgroundImage = `url(${originalProfilePic})`; 
+                originalBio = userData.bio || "";
             } else {
                 console.log("No such document!");
-                await db.collection("users").doc(username).set({
-                    username: username,
+                await db.collection("users").doc(user.uid).set({
+                    username: user.email.split('@')[0],
                     bio: "",
-                    profileColor: "#ccc" 
+                    profilePic: ""  
                 });
                 document.getElementById('bioDisplay').innerText = "No bio available";
-                document.getElementById('colorPicker').value = "#ccc"; 
                 document.getElementById('profilePic').style.backgroundColor = "#ccc"; 
             }
         } else {

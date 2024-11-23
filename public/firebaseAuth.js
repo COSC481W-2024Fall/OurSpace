@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const userCredential = await auth.createUserWithEmailAndPassword(username, password);
             const user = userCredential.user;
 
-            const userData = { name: name, username: username, bio: "", profileColor: "#ccc" , posts: ""}; 
+            const userData = { name: name, username: username, bio: "", profilePic: "", posts: ""}; 
+
             await userRef.set(userData);
             console.log("User document created:", userData);
 

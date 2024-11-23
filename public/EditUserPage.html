@@ -8,9 +8,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
     <script src="./firebaseConfig.js"></script>
     <script src="fetchUserDataProfile.js" defer></script>
-    <script src="userpage.js" defer></script>
     <script src="displayPost.js"></script>
 </head>
 <body>
@@ -19,8 +21,6 @@
         <h1>Our Space</h1>
         <div class="button-container">
             <button onclick="location.href='homepage.html'" id="homeButton">Home</button>
-            <button id="addPostButton">Add Post</button>
-            <button id="addFriendButton">Add Friend</button>
             <button class="edit" id="editButton" onclick="toggleEdit()">Edit</button>
             <button id="saveButton" style="display: none;" onclick="saveChanges()">Save</button>
             <button id="discardButton" style="display: none;" onclick="discardChanges()">Discard</button>
@@ -34,13 +34,18 @@
             <h2 id="username">Username</h2> 
             <div id="bioDisplay">No bio available</div>
             <textarea id="bioInput" class="bio" placeholder="Add bio here" style="display: none;"></textarea>
-            <input type="color" id="colorPicker" style="display: none;">
+            <input type="file" id="fileInput" style="display: none;" accept="image/*">
+            <img id="imagePreview" style="display: none; width: 100px; height: 100px; object-fit: cover;" alt="Profile Preview">
+        
+            <div class="crop-container" style="display:none;">
+                <img id="imageToCrop" src="" />
+            </div>
         </div>
     </div>
         <div id="postsContainer">
             <!-- Posts will be loaded here dynamically -->
     </div>
+    <script src="userpage.js" defer></script>
 </div>
-
 </body>
 </html>
