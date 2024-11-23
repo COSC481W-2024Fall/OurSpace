@@ -62,8 +62,8 @@ body {
     margin-right: 20px;
 }
 .post {
-    background-color: rgb(224, 137, 23);/* DarkMagenta for Post box */
-    color: black;
+    background-color: white;
+    color: darkmagenta;
     border: none;
     padding: 20px;
     margin-bottom: 20px;
