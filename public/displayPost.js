@@ -14,58 +14,66 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const db = firebase.firestore();
+    const auth = firebase.auth();
     const postsContainer = document.getElementById('postsContainer');
-    const userEmail = localStorage.getItem('loggedInUserId'); // Get logged-in user's email
 
     if (!postsContainer) {
         console.warn("postsContainer element not found.");
         return;
     }
 
-    if (!userEmail) {
-        console.warn("No logged-in user found in localStorage.");
-        return;
-    }
-
     postsContainer.innerHTML = ''; // Clear container before loading posts
 
-    // Access the current user's document
-    db.collection('users').doc(userEmail).get().then((userDoc) => {
-        if (userDoc.exists) {
-            const username = userDoc.data().username || "Unknown User";
+    // Wait for the user to authenticate
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            const userId = user.uid; // Get the user's UID
+            console.log("Fetching posts for user UID:", userId);
 
-            // Access the user's posts sub-collection
-            db.collection('users').doc(userEmail).collection('posts').orderBy('createdAt', 'desc').get()
-            .then((postsSnapshot) => {
-                if (postsSnapshot.empty) {
-                    console.log("No posts available for this user.");
-                    return;
-                }
+            try {
+                // Fetch the user's document
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const username = userDoc.data().username || "Unknown User";
 
-                postsSnapshot.forEach((postDoc) => {
-                    const post = postDoc.data();
+                    // Fetch the user's posts
+                    const postsSnapshot = await db
+                        .collection('users')
+                        .doc(userId)
+                        .collection('posts')
+                        .orderBy('createdAt', 'desc')
+                        .get();
 
-                    // Check if the post has the required fields
-                    if (post.content && post.createdAt) {
-                        const postElement = document.createElement('div');
-                        postElement.classList.add('post');
-                        postElement.innerHTML = `
-                            <h4>${username}</h4>
-                            <p>${post.content}</p>
-                            <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
-                        `;
-                        postsContainer.appendChild(postElement);
-                    } else {
-                        console.warn("Post is missing content or createdAt fields:", post);
+                    if (postsSnapshot.empty) {
+                        console.log("No posts available for this user.");
+                        return;
                     }
-                });
-            }).catch((error) => {
-                console.error("Error fetching posts:", error);
-            });
+
+                    postsSnapshot.forEach((postDoc) => {
+                        const post = postDoc.data();
+
+                        // Check if the post has the required fields
+                        if (post.content && post.createdAt) {
+                            const postElement = document.createElement('div');
+                            postElement.classList.add('post');
+                            postElement.innerHTML = `
+                                <h4>${username}</h4>
+                                <p>${post.content}</p>
+                                <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                            `;
+                            postsContainer.appendChild(postElement);
+                        } else {
+                            console.warn("Post is missing content or createdAt fields:", post);
+                        }
+                    });
+                } else {
+                    console.error("User document not found for logged-in user.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data or posts:", error);
+            }
         } else {
-            console.error("User document not found for logged-in user.");
+            console.warn("User is not logged in.");
         }
-    }).catch((error) => {
-        console.error("Error fetching user data:", error);
     });
 });

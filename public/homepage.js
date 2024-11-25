@@ -218,6 +218,88 @@ function showFriendsList() {
         friendsTitle.textContent = 'Friends List';  // Change the title text after loading
     }
 }
+// Function to display posts from the user's friends
+async function displayFriendsPosts() {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+        console.error("User is not logged in.");
+        alert("Please log in to view your friends' posts.");
+        return;
+    }
+
+    const postsContainer = document.getElementById('postsContainer');
+    if (!postsContainer) {
+        console.error("Posts container not found.");
+        return;
+    }
+
+    postsContainer.innerHTML = ''; // Clear previous posts
+
+    try {
+        // Fetch the current user's document
+        const userRef = db.collection('users').doc(currentUser.uid);
+        const userDoc = await userRef.get();
+
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            const friendIds = userData.friends || []; // Retrieve friends array or initialize to empty
+
+            if (friendIds.length === 0) {
+                postsContainer.innerHTML = `<p>You have no friends' posts to display.</p>`;
+                return;
+            }
+
+            // Fetch posts for each friend
+            for (const friendId of friendIds) {
+                const friendRef = db.collection('users').doc(friendId);
+                const friendDoc = await friendRef.get();
+
+                if (friendDoc.exists) {
+                    const friendData = friendDoc.data();
+                    const friendUsername = friendData.username || "Unknown User";
+
+                    // Fetch the friend's posts
+                    const postsSnapshot = await friendRef.collection('posts').orderBy('createdAt', 'desc').get();
+
+                    if (!postsSnapshot.empty) {
+                        postsSnapshot.forEach((postDoc) => {
+                            const post = postDoc.data();
+
+                            // Check if the post has the required fields
+                            if (post.content && post.createdAt) {
+                                const postElement = document.createElement('div');
+                                postElement.classList.add('post');
+                                postElement.innerHTML = `
+                                    <h4>${friendUsername}</h4>
+                                    <p>${post.content}</p>
+                                    <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                                `;
+                                postsContainer.appendChild(postElement);
+                            } else {
+                                console.warn("Post is missing content or createdAt fields:", post);
+                            }
+                        });
+                    }
+                }
+            }
+        } else {
+            console.error("User document not found for logged-in user.");
+        }
+    } catch (error) {
+        console.error("Error fetching friends' posts:", error);
+    }
+}
+
+// Call `displayFriendsPosts` on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            displayFriendsPosts(); // Fetch and display friends' posts on page load
+        }
+    });
+});
+
 
 // Call displayUpdatedFriendsList when page is loaded
 document.addEventListener('DOMContentLoaded', async () => {

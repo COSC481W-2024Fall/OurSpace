@@ -19,77 +19,81 @@ const auth = firebase.auth(); // Initialize auth
 
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userId'); // The profile user ID from the URL
+    let userId = urlParams.get('userId'); // The profile user ID from the URL
 
     if (!userId) {
         alert("No user ID provided.");
         return;
     }
 
-    let userData; // Define userData outside the if block for broader scope
+    // Check if userId is not an email and map it to an email if needed
+    const usersCollection = await db.collection('users').get();
+    let mappedUserId = null;
 
-    // Fetch and display profile info
-    const userDoc = await db.collection('users').doc(userId).get();
-    if (userDoc.exists) {
-        userData = userDoc.data();
-        document.getElementById('username').innerText = userData.username || "Username not found";
-        document.getElementById('bio').innerText = userData.bio || "No bio available";
-        // Only display the profile picture without editing options
-        if (userData.profilePic) {
-            document.getElementById('profilePic').style.backgroundImage = `url(${userData.profilePic})`;
-        } else {
-            document.getElementById('profilePic').style.backgroundColor = "#ccc"; // Default color if no pic
+    usersCollection.forEach(doc => {
+        const data = doc.data();
+        if (doc.id === userId || data.username === userId) {
+            mappedUserId = doc.id; // Use the email (doc.id) as the key
         }
-    } else {
+    });
+
+    if (!mappedUserId) {
         alert("User not found.");
         return;
     }
 
-    // Fetch and display user's posts
-    const postsContainer = document.getElementById('postsContainer');
-    if (!postsContainer) {
-        console.warn("postsContainer element not found.");
-        return;
-    }
+    userId = mappedUserId; // Normalize to email identifier
 
-    postsContainer.innerHTML = ''; // Clear container before loading posts
+    // Fetch and display profile info using the normalized userId
+    const userDoc = await db.collection('users').doc(userId).get();
+    if (userDoc.exists) {
+        const userData = userDoc.data();
+        document.getElementById('username').innerText = userData.username || "Username not found";
+        document.getElementById('bio').innerText = userData.bio || "No bio available";
 
-    // Access the user's posts sub-collection
-    db.collection('users').doc(userId).collection('posts').orderBy('createdAt', 'desc').get()
-    .then((postsSnapshot) => {
-        if (postsSnapshot.empty) {
-            console.log("No posts available for this user.");
+        if (userData.profilePic) {
+            document.getElementById('profilePic').style.backgroundImage = `url(${userData.profilePic})`;
+        } else {
+            document.getElementById('profilePic').style.backgroundColor = "#ccc";
+        }
+
+        // Fetch and display user's posts
+        const postsContainer = document.getElementById('postsContainer');
+        if (!postsContainer) {
+            console.warn("postsContainer element not found.");
             return;
         }
 
-        postsSnapshot.forEach((postDoc) => {
-            const post = postDoc.data();
+        postsContainer.innerHTML = ''; // Clear container before loading posts
 
-            // Ensure required fields are present
-            if (post.content && post.createdAt) {
-                const postElement = document.createElement('div');
-                postElement.classList.add('post');
-                postElement.innerHTML = `
-                    <h4>${userData.username || "Unknown User"}</h4>
-                    <p>${post.content}</p>
-                    <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
-                `;
-                postsContainer.appendChild(postElement);
-            } else {
-                console.warn("Post is missing content or createdAt fields:", post);
+        db.collection('users').doc(userId).collection('posts').orderBy('createdAt', 'desc').get()
+        .then((postsSnapshot) => {
+            if (postsSnapshot.empty) {
+                console.log("No posts available for this user.");
+                return;
             }
-        });
-    }).catch((error) => {
-        console.error("Error fetching posts:", error);
-    });
-});
 
-// Sign out function
-function signOut() { 
-    auth.signOut().then(() => {
-        console.log("User signed out successfully.");
-        window.location.href = 'login.html'; 
-    }).catch((error) => {
-        console.error("Error signing out:", error);
-    });
-}
+            postsSnapshot.forEach((postDoc) => {
+                const post = postDoc.data();
+
+                if (post.content && post.createdAt) {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                        <h4>${userData.username || "Unknown User"}</h4>
+                        <p>${post.content}</p>
+                        <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                    `;
+                    postsContainer.appendChild(postElement);
+                } else {
+                    console.warn("Post is missing content or createdAt fields:", post);
+                }
+            });
+        }).catch((error) => {
+            console.error("Error fetching posts:", error);
+        });
+    } else {
+        alert("User not found.");
+        return;
+    }
+});
