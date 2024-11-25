@@ -64,7 +64,7 @@ async function addFriend(friendData) {
         return;
     }
 
-    const userRef = db.collection('users').doc(currentUser.email.split('@')[0]); // Use username (email before '@') as doc ID
+    const userRef = db.collection('users').doc(currentUser.uid);  // Use UID for the document ID
     const userDoc = await userRef.get();
     const userData = userDoc.data();
 
@@ -89,7 +89,7 @@ async function addFriend(friendData) {
 
     // Close the modal and refresh the list of friends
     closeModal();
-    displayUpdatedFriendsList(); // Refresh the friends list after adding
+    displayUpdatedFriendsList();  // Refresh the friends list after adding
 }
 
 // Action to view the friend's profile
@@ -151,8 +151,7 @@ async function displayUpdatedFriendsList() {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-        const username = currentUser.email.split('@')[0]; // Use username based on email (e.g., 'tracy' from 'tracy@gmail.com')
-        const userRef = db.collection('users').doc(username); // Retrieve the document by username
+        const userRef = db.collection('users').doc(currentUser.uid); // Use UID for the document ID
         const userDoc = await userRef.get();
 
         if (userDoc.exists) {
@@ -161,17 +160,12 @@ async function displayUpdatedFriendsList() {
 
             if (userData && userData.friends) {
                 console.log("Friends List:", userData.friends);  // Log friends list
-                
-                // Check and display friends
-                if (userData.friends.length === 0) {
-                    alert("You currently have no friends.");
-                }
                 displayFriends(userData.friends);
             } else {
                 alert("No friends field in user data.");
             }
         } else {
-            console.log("User document does not exist for:", username);  // Log if the document doesn't exist
+            console.log("User document does not exist for:", currentUser.uid);  // Log if the document doesn't exist
             alert("User document does not exist. Please try again.");
         }
     } else {
@@ -199,7 +193,7 @@ async function displayFriends(friendIds) {
             if (friendDoc.exists) {
                 const friendData = friendDoc.data();
                 const friendLi = document.createElement('li');
-                
+
                 // Create an anchor tag with the friend's username and link to their profile
                 const friendLink = document.createElement('a');
                 friendLink.href = `friendsprofile.html?userId=${friendId}`;

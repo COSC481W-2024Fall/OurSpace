@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         userData = userDoc.data();
         document.getElementById('username').innerText = userData.username || "Username not found";
         document.getElementById('bio').innerText = userData.bio || "No bio available";
+        // Only display the profile picture without editing options
+        if (userData.profilePic) {
+            document.getElementById('profilePic').style.backgroundImage = `url(${userData.profilePic})`;
+        } else {
+            document.getElementById('profilePic').style.backgroundColor = "#ccc"; // Default color if no pic
+        }
     } else {
         alert("User not found.");
         return;
