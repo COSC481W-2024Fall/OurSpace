@@ -18,21 +18,21 @@
 
     <div class="header">
         <h1 onclick="window.location.href='homepage.html'">
-            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 80px;">
+            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo">
         </h1>
         <div class="button-container">
             <button onclick="location.href='homepage.html'" id="homeButton">Home</button>
             <button class="edit" id="editButton" onclick="toggleEdit()">Edit</button>
             <button id="saveButton" style="display: none;" onclick="saveChanges()">Save</button>
             <button id="discardButton" style="display: none;" onclick="discardChanges()">Discard</button>
-            <button id="signOutButton" onclick="signOut()">Sign Out</button>
+            <button id="signOutButton" onclick="window.location.href='login.html'">Sign Out</button>
         </div>
     </div>
 
     <div class="profile">
         <div class="profile-pic" id="profilePic"></div>
         <div class="profile-info">
-            <h2 id="username">Username</h2> 
+            <h2 id="username">Username</h2>
             <div id="bioDisplay">No bio available</div>
             <textarea id="bioInput" class="bio" placeholder="Add bio here" style="display: none;"></textarea>
             <input type="file" id="fileInput" style="display: none;" accept="image/*">
@@ -43,9 +43,11 @@
             </div>
         </div>
     </div>
-        <div id="postsContainer">
-            <!-- Posts will be loaded here dynamically -->
+
+    <div id="postsContainer">
+        <!-- Posts will be loaded here dynamically -->
     </div>
+
     <script src="userpage.js" defer></script>
 </body>
 </html>
