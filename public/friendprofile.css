@@ -1,7 +1,8 @@
 body {
     text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: darkmagenta; 
+    font-family: 'Arial', sans-serif;
+    background-color: #6A1B9A;
+    background: linear-gradient(-180deg, rgba(129, 9, 145, 0.8), rgba(74, 223, 249, 0.466));
     margin: 0;
     padding: 20px;
 }
@@ -11,6 +12,7 @@ body {
     justify-content: space-between;
     align-items: center;
     color: white;
+    padding: 20px;
 }
 
 h1 {
@@ -21,24 +23,39 @@ h1 {
 h1 img {
     height: 80px;
     width: auto;
+    cursor: pointer;
 }
 
 .profile {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    background-color: white; 
-    border-radius: 8px;
+    background-color: white;
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 100px orange; 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profile-pic {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background-color: #ccc; 
-    margin-right: 20px;
+    background-color: #ddd;
+    margin-right: 30px;
+    border: 3px solid #812f9b;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.profile-pic:hover {
+    transform: scale(1.1);
 }
 
 .profile-info {
@@ -47,60 +64,76 @@ h1 img {
 }
 
 #username {
-    font-size: 24px;
-    color: darkmagenta;
+    font-size: 28px;
+    color: #812f9b;
+    font-weight: 600;
 }
 
 .bio {
-    margin-top: 5px;
+    margin-top: 10px;
     font-style: italic;
-    color: rgb(132, 9, 132);
+    color: #812f9b;
     display: block;
-    text-align: left; 
-}
-
-.sign-out-btn {
-    margin-left: auto;
+    text-align: left;
 }
 
 .bio-container {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 20px;
 }
 
 .bio-area {
-    background-color: white; 
-    padding: 20px; 
-    border-radius: 8px; 
-    box-shadow: 0 2px 100px orange; 
-    width: 100%; 
-    max-width: 700px; 
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    margin-top: 20px;
+}
+
+.bio-text {
+    font-size: 16px;
+    color: #555;
 }
 
 .posts {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
 }
 
 .post {
     background-color: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 9px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+    background: white;
+    border-left: 8px solid #6A1B9A;
+    border-right: 8px solid #6A1B9A;
+    transition: all 0.3s ease;
     text-align: left;
-    width: 95%; 
-    
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 button {
     cursor: pointer;
     margin-right: 5px;
-    background-color: orange;
+    background-color: #812f9b;
     color: white;
     border: none;
     border-radius: 5px;
@@ -112,21 +145,37 @@ button:hover {
     background-color: steelblue;
 }
 
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; 
-    background-color: #ccc; 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+@media (max-width: 768px) {
+    .profile {
+        flex-direction: column;
+        align-items: center;
+    }
 
-#profilePic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-size: cover;    
-    background-position: center; 
-    background-repeat: no-repeat; 
+    .profile-pic {
+        margin-bottom: 20px;
+    }
+
+    .bio-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    #imagePreview {
+        width: 80px;
+        height: 80px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-container button {
+        margin-top: 10px;
+    }
+
+    .post {
+        max-width: 100%;
+        padding: 15px 20px;
+    }
 }

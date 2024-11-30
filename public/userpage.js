@@ -3,11 +3,10 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-
 let isEditing = false;
 let originalBio = "";
 let originalProfilePic = "";
-let cropper; 
+let cropper;
 
 // Function to toggle the editing mode
 function toggleEdit() {
@@ -96,13 +95,13 @@ async function saveChanges() {
     const bio = bioInput.value;
 
     bioDisplay.innerText = bio;
-    let imageUrl = originalProfilePic; 
+    let imageUrl = originalProfilePic;
 
     // If a new profile picture was selected and cropped, upload it to Firebase
     if (cropper) {
         const canvas = cropper.getCroppedCanvas({ width: 200, height: 200 });
         const croppedImageUrl = canvas.toDataURL();
-        imageUrl = croppedImageUrl; 
+        imageUrl = croppedImageUrl;
     }
 
     // Update Firestore with new bio and profile picture URL
@@ -135,8 +134,8 @@ async function uploadCroppedImageToFirebase(croppedImageUrl) {
     const blob = await response.blob();
 
     try {
-        await profilePicRef.put(blob); 
-        const downloadUrl = await profilePicRef.getDownloadURL(); 
+        await profilePicRef.put(blob);
+        const downloadUrl = await profilePicRef.getDownloadURL();
 
         await firebase.firestore().collection("users").doc(user.uid).update({
             profilePic: downloadUrl
@@ -152,7 +151,7 @@ async function uploadCroppedImageToFirebase(croppedImageUrl) {
 function discardChanges() {
     const bioInput = document.getElementById('bioInput');
     bioInput.value = originalBio;
-    document.getElementById('fileInput').value = "";  
+    document.getElementById('fileInput').value = "";
     document.getElementById('imagePreview').src = originalProfilePic;
     toggleEdit();
 }
@@ -161,15 +160,15 @@ function discardChanges() {
 document.addEventListener('DOMContentLoaded', async function () {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-            const username = user.email.split('@')[0]; 
+            const username = user.email.split('@')[0];
             const userDoc = await db.collection("users").doc(user.uid).get();
 
             if (userDoc.exists) {
                 const userData = userDoc.data();
                 document.getElementById('username').innerText = userData.username;
                 document.getElementById('bioDisplay').innerText = userData.bio || "No bio available";
-                originalProfilePic = userData.profilePic || ""; 
-                document.getElementById('profilePic').style.backgroundImage = `url(${originalProfilePic})`; 
+                originalProfilePic = userData.profilePic || "";
+                document.getElementById('profilePic').style.backgroundImage = `url(${originalProfilePic})`;
                 originalBio = userData.bio || "";
             } else {
                 console.log("No such document!");
@@ -179,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     profilePic: ""  
                 });
                 document.getElementById('bioDisplay').innerText = "No bio available";
-                document.getElementById('profilePic').style.backgroundColor = "#ccc"; 
+                document.getElementById('profilePic').style.backgroundColor = "#ccc";
             }
         } else {
             console.log("No user is signed in.");

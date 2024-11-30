@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>OurSpace SignUp</title>
-
     <link rel="stylesheet" href="signup.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -13,41 +11,42 @@
 </head>
 <body>
 
-    <h1>
-        <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 80px;">
-    </h1>
+    <header>
+        <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" class="logo">
+    </header>
 
-    <form id="signupForm">
+    <div class="signup-container">
+        <form id="signupForm">
+            <h2>Create Account</h2>
 
-        <h2>SIGN UP</h2>
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" required>
+            </div>
 
-        <label>Name: </label>
-        <input type="text" name="name" id="name" required>
+            <div class="input-group">
+                <label for="username">Email:</label>
+                <input type="email" name="username" id="username" required>
+            </div>
 
-        <br>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
 
-        <label>Username (Email): </label>
-        <input type="email" name="username" id="username" required>
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" name="confirm-password" id="confirm-password" required>
+            </div>
 
-        <br>
-        
-        <label>Password: </label>
-        <input type="password" name="password" id="password" required>
-        
-        <br>
-        
-        <label>Confirm Password: </label>
-        <input type="password" name="confirm-password" id="confirm-password" required>
-        
-        <br>
-        <button type="submit" id="submit">Sign Up!</button>
-    </form>
+            <button type="submit" id="submit">Sign Up!</button>
+        </form>
 
-    <!-- Button to go back to login page -->
-    <div style="margin-top: 20px; text-align: center;">
-        <p>Already have an account? <a href="login.html">Click here to go back to login</a></p>
+        <div class="signup-link">
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
     </div>
-    
+
     <script src="firebaseAuth.js"></script>
 </body>
 </html>

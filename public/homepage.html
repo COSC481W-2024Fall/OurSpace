@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <!-- Your custom scripts -->
     <script src="firebasePost.js"></script>
     <script src="homepage.js"></script>
     <title>OurSpace</title>
@@ -16,32 +14,24 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar">
         <h1 onclick="window.location.href='homepage.html'">
-            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 80px;">
+            <img src="Blue+White%20long%20logo.png" alt="OurSpace Logo" style="height: 90px;">
         </h1>
-        <div class="menu">
+        <div class="navbar-buttons">
             <button onclick="window.location.href='EditUserPage.html'" id="myprofilebutton">My Profile</button>
-        </div>
-        <!-- Sign Out Button -->
-        <div class="sign-out-btn">
             <button onclick="window.location.href='login.html'" id="signoutbutton">Sign Out</button>
         </div>
     </div>
 
-    <!-- Search Bar -->
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search for friends..." oninput="searchFriends()">
         <div class="dropdown" id="searchResults"></div>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
-        <!-- Posts Section -->
         <div class="posts">
             
-            <!-- Post Creation Form -->
             <div class="post-form">
                 <form id="postForm">
                     <textarea id="postContent" rows="4" placeholder="What's on your mind?" required></textarea>
@@ -49,23 +39,17 @@
                 </form>
             </div>
             
-            <!-- Existing Posts -->
             <div id="postsContainer">
-                <!-- Posts will be loaded here dynamically -->
             </div>
         </div>
 
-        <!-- Friends List Section -->
         <div class="friends-list">
-            <!-- Clickable title for loading the friends list -->
             <h3 class="friends-list-title" style="cursor: pointer;">Show Friends List</h3>
             <ul>
-                <!-- Friends will be dynamically added here -->
             </ul>
         </div>
     </div>
 
-    <!-- Friend Action Modal -->
     <div id="friendActionModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>

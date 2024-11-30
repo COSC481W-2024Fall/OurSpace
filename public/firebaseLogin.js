@@ -1,7 +1,11 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', function () {
     const firebaseConfig = {
         apiKey: "AIzaSyCppKyFDiC6qSWoS25mP4f-7DUfJ05BWl8",
-        authDomain: "ourspace-9703c.firebaseapp.com",
+        authDomain: "ourspace-9703c.web.app",
         projectId: "ourspace-9703c",
         storageBucket: "ourspace-9703c.appspot.com",
         messagingSenderId: "829335148222",
@@ -10,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -23,18 +27,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const password = document.getElementById('password').value;
             
             try {
-                const userCredential = await auth.signInWithEmailAndPassword(username, password);
+                const userCredential = await signInWithEmailAndPassword(auth, username, password);
                 const user = userCredential.user;
 
                 // Check if the friends list exists, create one if not
-                const userRef = db.collection('users').doc(username);
-                const userDoc = await userRef.get();
+                const userRef = doc(db, 'users', username);
+                const userDoc = await getDoc(userRef);
                 
-                if (userDoc.exists) {
+                if (userDoc.exists()) {
                     const userData = userDoc.data();
                     if (!userData.friends) {
                         // If friends list doesn't exist, initialize it as an empty array
-                        await userRef.update({ friends: [] });
+                        await updateDoc(userRef, { friends: [] });
                     }
                 } else {
                     // Handle error if user data does not exist

@@ -2,7 +2,7 @@
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCppKyFDiC6qSWoS25mP4f-7DUfJ05BWl8",
-    authDomain: "ourspace-9703c.firebaseapp.com",
+    authDomain: "ourspace-9703c.web.app",
     projectId: "ourspace-9703c",
     storageBucket: "ourspace-9703c.appspot.com",
     messagingSenderId: "829335148222",
