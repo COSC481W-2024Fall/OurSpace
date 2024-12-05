@@ -156,7 +156,10 @@ body {
     flex: 3;
     margin-right: 20px;
 }
-
+.post h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
 .post-form {
     background-color: white;
     border-radius: 10px;

@@ -77,14 +77,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const post = postDoc.data();
 
                 if (post.content && post.createdAt) {
+                    const postId = postDoc.id;
                     const postElement = document.createElement('div');
                     postElement.classList.add('post');
                     postElement.innerHTML = `
                         <h4>${userData.username || "Unknown User"}</h4>
                         <p>${post.content}</p>
                         <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                        <button class="like-btn" data-post-id="${postId}">Like</button>
+                        <span class="likes-count">${post.likesCount || 0} likes</span>
                     `;
                     postsContainer.appendChild(postElement);
+
+                    // Attach like button handler
+                    attachLikeHandlerToButton(postElement.querySelector('.like-btn'), userId, postId);
                 } else {
                     console.warn("Post is missing content or createdAt fields:", post);
                 }
@@ -97,3 +103,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 });
+
+// Function to attach a like handler to a specific button
+function attachLikeHandlerToButton(button, userId, postId) {
+    button.addEventListener('click', async () => {
+        const postRef = db.collection('users').doc(userId).collection('posts').doc(postId);
+        const likesCountSpan = button.nextElementSibling; // Span showing likes count
+
+        try {
+            const postDoc = await postRef.get();
+            if (postDoc.exists) {
+                const postData = postDoc.data();
+                const likedBy = postData.likedBy || [];
+                let newLikesCount = postData.likesCount || 0; // Ensure likesCount is a number
+
+                if (likedBy.includes(auth.currentUser.uid)) {
+                    // User has already liked the post, so unlike it
+                    newLikesCount -= 1;
+                    await postRef.update({
+                        likesCount: newLikesCount,
+                        likedBy: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.uid)
+                    });
+                } else {
+                    // User has not liked the post, so like it
+                    newLikesCount += 1;
+                    await postRef.update({
+                        likesCount: newLikesCount,
+                        likedBy: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                    });
+                }
+
+                // Update UI immediately
+                likesCountSpan.textContent = `${newLikesCount} likes`;
+            } else {
+                console.error("Post document not found:", postId);
+            }
+        } catch (error) {
+            console.error("Error toggling like:", error);
+        }
+    });
+}
