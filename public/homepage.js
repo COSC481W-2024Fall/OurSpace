@@ -218,7 +218,7 @@ function showFriendsList() {
         friendsTitle.textContent = 'Friends List';  // Change the title text after loading
     }
 }
-// Function to display posts from the user's friends
+
 async function displayFriendsPosts() {
     const currentUser = auth.currentUser;
 
@@ -265,6 +265,7 @@ async function displayFriendsPosts() {
                     if (!postsSnapshot.empty) {
                         postsSnapshot.forEach((postDoc) => {
                             const post = postDoc.data();
+                            const postId = postDoc.id;
 
                             // Check if the post has the required fields
                             if (post.content && post.createdAt) {
@@ -274,8 +275,17 @@ async function displayFriendsPosts() {
                                     <h4>${friendUsername}</h4>
                                     <p>${post.content}</p>
                                     <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
+                                    <button class="like-btn" data-post-id="${postId}" data-friend-id="${friendId}">Like</button>
+                                    <span class="likes-count">${post.likesCount || 0} likes</span>
                                 `;
                                 postsContainer.appendChild(postElement);
+
+                                // Attach like button handler
+                                attachLikeHandlerToButton(
+                                    postElement.querySelector('.like-btn'),
+                                    friendId,
+                                    postId
+                                );
                             } else {
                                 console.warn("Post is missing content or createdAt fields:", post);
                             }
@@ -290,6 +300,47 @@ async function displayFriendsPosts() {
         console.error("Error fetching friends' posts:", error);
     }
 }
+
+// Function to attach a like handler to a specific button
+function attachLikeHandlerToButton(button, friendId, postId) {
+    button.addEventListener('click', async () => {
+        const postRef = db.collection('users').doc(friendId).collection('posts').doc(postId);
+        const likesCountSpan = button.nextElementSibling; // Span showing likes count
+
+        try {
+            const postDoc = await postRef.get();
+            if (postDoc.exists) {
+                const postData = postDoc.data();
+                const likedBy = postData.likedBy || [];
+                let newLikesCount = postData.likesCount || 0; // Ensure likesCount is a number
+
+                if (likedBy.includes(auth.currentUser.uid)) {
+                    // User has already liked the post, so unlike it
+                    newLikesCount -= 1;
+                    await postRef.update({
+                        likesCount: newLikesCount,
+                        likedBy: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.uid)
+                    });
+                } else {
+                    // User has not liked the post, so like it
+                    newLikesCount += 1;
+                    await postRef.update({
+                        likesCount: newLikesCount,
+                        likedBy: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                    });
+                }
+
+                // Update UI immediately
+                likesCountSpan.textContent = `${newLikesCount} likes`;
+            } else {
+                console.error("Post document not found:", postId);
+            }
+        } catch (error) {
+            console.error("Error toggling like:", error);
+        }
+    });
+}
+
 
 // Call `displayFriendsPosts` on page load
 document.addEventListener('DOMContentLoaded', async () => {

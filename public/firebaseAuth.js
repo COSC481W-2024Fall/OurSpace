@@ -52,7 +52,6 @@ const firebaseConfig = {
         username: username,
         bio: "",
         profilePic: "",
-        posts: "",
         friends: [] 
       };
   
