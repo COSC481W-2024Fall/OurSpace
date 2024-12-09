@@ -25,7 +25,7 @@
     </div>
 
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search for friends..." oninput="searchFriends()">
+        <input type="text" id="searchInput" placeholder="Search for followers..." oninput="searchFollowers()">
         <div class="dropdown" id="searchResults"></div>
     </div>
 
@@ -43,19 +43,18 @@
             </div>
         </div>
 
-        <div class="friends-list">
-            <h3 class="friends-list-title" style="cursor: pointer;">Show Friends List</h3>
-            <ul>
-            </ul>
-        </div>
+        <div class="followers-list">
+            <h3 class="followers-list-title">Followers</h3>
+            <ul></ul>
+        </div>        
     </div>
 
-    <div id="friendActionModal" class="modal">
+    <div id="followerActionModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle"></h2>
             <p id="modalMessage"></p>
-            <button id="modalAddFriendBtn" onclick="addFriend()">Add Friend</button>
+            <button id="modalAddFollowerBtn" onclick="addFollower()">Follow</button>
             <button id="modalViewProfileBtn" onclick="viewProfile()">View Profile</button>
         </div>
     </div>

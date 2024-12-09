@@ -27,23 +27,22 @@ function signOut() {
     });
 }
 
-// Show modal with the friend's details
-function showFriendActionModal(friendData) {
-    const modal = document.getElementById('friendActionModal');
+// Show modal with the follower's details
+function showFollowerActionModal(followerData) {
+    const modal = document.getElementById('followerActionModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalMessage = document.getElementById('modalMessage');
-    const modalAddFriendBtn = document.getElementById('modalAddFriendBtn');
+    const modalAddFollowerBtn = document.getElementById('modalAddFollowerBtn');
     const modalViewProfileBtn = document.getElementById('modalViewProfileBtn');
     
-    modalTitle.textContent = `Do you want to add ${friendData.username} as a friend?`;
-    modalMessage.textContent = `If you just want to view their profile, click 'View Profile'. Otherwise, click 'Add Friend'.`;
+    modalTitle.textContent = `Do you want to follow ${followerData.username}?`;
+    modalMessage.textContent = `If you just want to view their profile, click 'View Profile'. Otherwise, click 'Follow'.`;
     
-    // Set the actions for the buttons
-    modalAddFriendBtn.onclick = function () {
-        addFriend(friendData);
+    modalAddFollowerBtn.onclick = function () {
+        addFollower(followerData);
     };
     modalViewProfileBtn.onclick = function () {
-        viewProfile(friendData);
+        viewProfile(followerData);
     };
 
     modal.style.display = "block"; // Show the modal
@@ -51,64 +50,48 @@ function showFriendActionModal(friendData) {
 
 // Close the modal
 function closeModal() {
-    const modal = document.getElementById('friendActionModal');
+    const modal = document.getElementById('followerActionModal');
     modal.style.display = "none";
 }
 
-// Action to add a friend
-async function addFriend(friendData) {
+// Action to add a follower
+async function addFollower(followerData) {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
-        alert('You must be signed in to add friends.');
+        alert('You must be signed in to follow someone.');
         return;
     }
 
-    const userRef = db.collection('users').doc(currentUser.uid);  // Use UID for the document ID
+    const userRef = db.collection('users').doc(currentUser.uid);
     const userDoc = await userRef.get();
     const userData = userDoc.data();
 
-    // Check if the 'friends' field exists, if not, initialize it as an empty array
-    if (!userData.friends) {
-        userData.friends = [];  // Initialize friends as an empty array if not present
+    if (!userData.followers) {
+        userData.followers = [];
     }
 
-    // Check if the user already has this friend in their list
-    if (userData.friends.includes(friendData.id)) {
-        alert(`${friendData.username} is already in your friends list.`);
+    if (userData.followers.includes(followerData.id)) {
+        alert(`${followerData.username} is already in your followers list.`);
         return;
     }
 
-    // If the user doesn't already have the friend, add the friend to the list
-    userData.friends.push(friendData.id);
+    userData.followers.push(followerData.id);
+    await userRef.update({ followers: userData.followers });
 
-    // Update the user's friends list in Firestore
-    await userRef.update({ friends: userData.friends });
-
-    alert(`${friendData.username} has been added to your friends list.`);
-
-    // Close the modal and refresh the list of friends
+    alert(`${followerData.username} has been added to your followers list.`);
     closeModal();
-    displayUpdatedFriendsList();  // Refresh the friends list after adding
+    displayUpdatedFollowersList();
 }
 
-// Action to view the friend's profile
-function viewProfile(friendData) {
-    // Redirect to friend's profile page
-    window.location.href = `friendsprofile.html?userId=${friendData.id}`;
-    closeModal(); // Close the modal after redirection
+// Action to view the follower's profile
+function viewProfile(followerData) {
+    window.location.href = `friendsprofile.html?userId=${followerData.id}`;
+    closeModal();
 }
 
-
-// Action to view the friend's profile
-function viewProfile(friendData) {
-    // Redirect to friend's profile page
-    window.location.href = `friendsprofile.html?userId=${friendData.id}`;
-    closeModal(); // Close the modal after redirection
-}
-
-// Modify the searchFriends function to use the new modal
-async function searchFriends() {
+// Search for followers
+async function searchFollowers() {
     const query = document.getElementById('searchInput').value.toLowerCase();
     const resultsContainer = document.getElementById('searchResults');
     resultsContainer.innerHTML = '';
@@ -122,15 +105,14 @@ async function searchFriends() {
             const data = doc.data();
             if (data.username && data.username.toLowerCase().includes(query)) {
                 found = true;
-                const friendDiv = document.createElement('div');
-                friendDiv.innerHTML = data.username;
+                const followerDiv = document.createElement('div');
+                followerDiv.innerHTML = data.username;
 
-                // Handle click on a friend result
-                friendDiv.onclick = () => {
-                    showFriendActionModal({ username: data.username, id: doc.id });
+                followerDiv.onclick = () => {
+                    showFollowerActionModal({ username: data.username, id: doc.id });
                 };
 
-                resultsContainer.appendChild(friendDiv);
+                resultsContainer.appendChild(followerDiv);
             }
         });
 
@@ -146,85 +128,88 @@ async function searchFriends() {
     }
 }
 
-// Display friends list
-async function displayUpdatedFriendsList() {
+// Display followers list
+async function displayUpdatedFollowersList() {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-        const userRef = db.collection('users').doc(currentUser.uid); // Use UID for the document ID
+        const userRef = db.collection('users').doc(currentUser.uid);
         const userDoc = await userRef.get();
 
         if (userDoc.exists) {
             const userData = userDoc.data();
-            console.log("User Data:", userData);  // Check user data
-
-            if (userData && userData.friends) {
-                console.log("Friends List:", userData.friends);  // Log friends list
-                displayFriends(userData.friends);
+            if (userData && userData.followers) {
+                displayFollowers(userData.followers);
             } else {
-                alert("No friends field in user data.");
+                displayFollowers([]); // Pass an empty array to display "No followers yet"
             }
         } else {
-            console.log("User document does not exist for:", currentUser.uid);  // Log if the document doesn't exist
-            alert("User document does not exist. Please try again.");
+            console.error("User document does not exist.");
+            displayFollowers([]); // Handle case where user document doesn't exist
         }
     } else {
-        console.log("No user is logged in.");
-        alert("Please log in first.");
+        console.error("No user is logged in.");
+        displayFollowers([]); // Handle case where no user is logged in
     }
 }
 
-// Function to display friends list in the UI
-async function displayFriends(friendIds) {
-    const friendsListContainer = document.querySelector('.friends-list ul');
-    friendsListContainer.innerHTML = ''; // Clear previous friends list
+// Function to display followers in the UI with profile buttons
+async function displayFollowers(followerIds) {
+    const followersListContainer = document.querySelector('.followers-list ul');
+    followersListContainer.innerHTML = '';
 
-    // If the friends array is empty, show a message
-    if (friendIds && friendIds.length === 0) {
-        const noFriendsMessage = document.createElement('li');
-        noFriendsMessage.textContent = "You have no friends yet.";
-        friendsListContainer.appendChild(noFriendsMessage);
-    } else if (friendIds) {
-        // Fetch friend data from Firebase for each friendId
-        for (const friendId of friendIds) {
-            const friendRef = db.collection('users').doc(friendId);
-            const friendDoc = await friendRef.get();
+    if (!followerIds || followerIds.length === 0) {
+        const noFollowersMessage = document.createElement('li');
+        noFollowersMessage.textContent = "You have no followers yet.";
+        noFollowersMessage.classList.add('no-followers-message');
+        followersListContainer.appendChild(noFollowersMessage);
+        return;
+    }
 
-            if (friendDoc.exists) {
-                const friendData = friendDoc.data();
-                const friendLi = document.createElement('li');
+    for (const followerId of followerIds) {
+        const followerRef = db.collection('users').doc(followerId);
+        const followerDoc = await followerRef.get();
 
-                // Create an anchor tag with the friend's username and link to their profile
-                const friendLink = document.createElement('a');
-                friendLink.href = `friendsprofile.html?userId=${friendId}`;
-                friendLink.textContent = friendData.username;
+        if (followerDoc.exists) {
+            const followerData = followerDoc.data();
 
-                friendLi.appendChild(friendLink); // Append the link inside the list item
-                friendsListContainer.appendChild(friendLi);
-            }
+            const followerLi = document.createElement('li');
+            followerLi.classList.add('follower-item');
+
+            const followerName = document.createElement('span');
+            followerName.textContent = followerData.username;
+            followerName.classList.add('follower-name');
+
+            const profileButton = document.createElement('button');
+            profileButton.textContent = 'View Profile';
+            profileButton.classList.add('profile-button');
+            profileButton.onclick = () => {
+                window.location.href = `friendsprofile.html?userId=${followerId}`;
+            };
+
+            followerLi.appendChild(followerName);
+            followerLi.appendChild(profileButton);
+            followersListContainer.appendChild(followerLi);
         }
     }
 }
 
-// Display friends list when the "Show Friends List" title is clicked
-function showFriendsList() {
-    const friendsListContainer = document.querySelector('.friends-list');
-    const friendsTitle = document.querySelector('.friends-list-title');
+// Automatically display followers list and posts on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            displayUpdatedFollowersList();
+        }
+    });
+});
 
-    // If friends list is not loaded yet, load it
-    if (!friendsListContainer.classList.contains('loaded')) {
-        displayUpdatedFriendsList(); // Load the friends list
-        friendsListContainer.classList.add('loaded'); // Mark it as loaded
-        friendsTitle.textContent = 'Friends List';  // Change the title text after loading
-    }
-}
-
-async function displayFriendsPosts() {
+// Function to display posts from followers with like button functionality
+async function displayFollowersPosts() {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
         console.error("User is not logged in.");
-        alert("Please log in to view your friends' posts.");
+        alert("Please log in to view your followers' posts.");
         return;
     }
 
@@ -243,24 +228,24 @@ async function displayFriendsPosts() {
 
         if (userDoc.exists) {
             const userData = userDoc.data();
-            const friendIds = userData.friends || []; // Retrieve friends array or initialize to empty
+            const followerIds = userData.followers || []; // Retrieve followers array or initialize to empty
 
-            if (friendIds.length === 0) {
-                postsContainer.innerHTML = `<p>You have no friends' posts to display.</p>`;
+            if (followerIds.length === 0) {
+                postsContainer.innerHTML = `<p>You have no followers' posts to display.</p>`;
                 return;
             }
 
-            // Fetch posts for each friend
-            for (const friendId of friendIds) {
-                const friendRef = db.collection('users').doc(friendId);
-                const friendDoc = await friendRef.get();
+            // Fetch posts for each follower
+            for (const followerId of followerIds) {
+                const followerRef = db.collection('users').doc(followerId);
+                const followerDoc = await followerRef.get();
 
-                if (friendDoc.exists) {
-                    const friendData = friendDoc.data();
-                    const friendUsername = friendData.username || "Unknown User";
+                if (followerDoc.exists) {
+                    const followerData = followerDoc.data();
+                    const followerUsername = followerData.username || "Unknown User";
 
-                    // Fetch the friend's posts
-                    const postsSnapshot = await friendRef.collection('posts').orderBy('createdAt', 'desc').get();
+                    // Fetch the follower's posts
+                    const postsSnapshot = await followerRef.collection('posts').orderBy('createdAt', 'desc').get();
 
                     if (!postsSnapshot.empty) {
                         postsSnapshot.forEach((postDoc) => {
@@ -272,10 +257,10 @@ async function displayFriendsPosts() {
                                 const postElement = document.createElement('div');
                                 postElement.classList.add('post');
                                 postElement.innerHTML = `
-                                    <h4>${friendUsername}</h4>
+                                    <h4>${followerUsername}</h4>
                                     <p>${post.content}</p>
                                     <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
-                                    <button class="like-btn" data-post-id="${postId}" data-friend-id="${friendId}">Like</button>
+                                    <button class="like-btn" data-post-id="${postId}" data-follower-id="${followerId}">Like</button>
                                     <span class="likes-count">${post.likesCount || 0} likes</span>
                                 `;
                                 postsContainer.appendChild(postElement);
@@ -283,7 +268,7 @@ async function displayFriendsPosts() {
                                 // Attach like button handler
                                 attachLikeHandlerToButton(
                                     postElement.querySelector('.like-btn'),
-                                    friendId,
+                                    followerId,
                                     postId
                                 );
                             } else {
@@ -297,14 +282,14 @@ async function displayFriendsPosts() {
             console.error("User document not found for logged-in user.");
         }
     } catch (error) {
-        console.error("Error fetching friends' posts:", error);
+        console.error("Error fetching followers' posts:", error);
     }
 }
 
 // Function to attach a like handler to a specific button
-function attachLikeHandlerToButton(button, friendId, postId) {
+function attachLikeHandlerToButton(button, followerId, postId) {
     button.addEventListener('click', async () => {
-        const postRef = db.collection('users').doc(friendId).collection('posts').doc(postId);
+        const postRef = db.collection('users').doc(followerId).collection('posts').doc(postId);
         const likesCountSpan = button.nextElementSibling; // Span showing likes count
 
         try {
@@ -342,11 +327,11 @@ function attachLikeHandlerToButton(button, friendId, postId) {
 }
 
 
-// Call `displayFriendsPosts` on page load
+// Call `displayFollowersPosts` on page load
 document.addEventListener('DOMContentLoaded', async () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
-            displayFriendsPosts(); // Fetch and display friends' posts on page load
+            displayFollowersPosts(); // Fetch and display followers' posts on page load
         }
     });
 });
