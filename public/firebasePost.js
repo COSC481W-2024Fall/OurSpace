@@ -18,27 +18,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('postForm').addEventListener('submit', async (event) => {
         event.preventDefault();
-        
+
         const postContent = document.getElementById('postContent').value;
 
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                const userId = user.uid; // Use UID instead of email
-                console.log("Attempting to add post:", postContent, "by user UID:", userId);
+                const userId = user.uid;
 
                 if (postContent) {
                     try {
                         const userRef = db.collection('users').doc(userId);
-                        await userRef.collection('posts').add({
+                        const userDoc = await userRef.get();
+
+                        if (!userDoc.exists) {
+                            throw new Error("User data not found.");
+                        }
+
+                        const username = userDoc.data().username || "Unknown User";
+
+                        // Add post to Firestore
+                        const postRef = await userRef.collection('posts').add({
                             content: postContent,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            likesCount: 0,
+                            likedBy: []
                         });
+
                         document.getElementById('postContent').value = ''; // Clear the form
-                        
+
                         // Update DOM immediately
                         const newPost = {
+                            id: postRef.id,
                             content: postContent,
-                            userId: userId,
+                            username: username,
+                            likesCount: 0,
                             createdAt: new Date()
                         };
                         addPostToDOM(newPost);
@@ -55,44 +68,98 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    loadPosts();  // Load existing posts on page load
+    loadPosts(); // Load existing posts on page load
 
+    // Function to attach a like handler to a specific button
+    function attachLikeHandlerToButton(button, userId, postId) {
+        button.addEventListener('click', async () => {
+            const postRef = db.collection('users').doc(userId).collection('posts').doc(postId);
+            const likesCountSpan = button.nextElementSibling; // Span showing likes count
+    
+            try {
+                const postDoc = await postRef.get();
+                if (postDoc.exists) {
+                    const postData = postDoc.data();
+                    const likedBy = postData.likedBy || [];
+                    let newLikesCount = postData.likesCount || 0; // Ensure likesCount is a number
+    
+                    if (likedBy.includes(userId)) {
+                        // User has already liked the post, so unlike it
+                        newLikesCount -= 1;
+                        await postRef.update({
+                            likesCount: newLikesCount,
+                            likedBy: firebase.firestore.FieldValue.arrayRemove(userId)
+                        });
+                    } else {
+                        // User has not liked the post, so like it
+                        newLikesCount += 1;
+                        await postRef.update({
+                            likesCount: newLikesCount,
+                            likedBy: firebase.firestore.FieldValue.arrayUnion(userId)
+                        });
+                    }
+    
+                    // Update UI immediately
+                    likesCountSpan.textContent = `${newLikesCount} likes`;
+                } else {
+                    console.error("Post document not found:", postId);
+                }
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        });
+    }
+    
     // Function to add a post to the DOM
     function addPostToDOM(post) {
         const postsContainer = document.getElementById('postsContainer');
         const postElement = document.createElement('div');
         postElement.classList.add('post');
 
-        // Fetch the username from Firestore based on UID
-        db.collection('users').doc(post.userId).get().then((userDoc) => {
-            const username = userDoc.data().username || "Unknown User";
+        // Create the post display
+        postElement.innerHTML = `
+            <h4>${post.username}</h4>
+            <p>${post.content}</p>
+            <small>${post.createdAt.toLocaleString()}</small>
+            <button class="like-btn" data-post-id="${post.id}">Like</button>
+            <span class="likes-count">${post.likesCount} likes</span>
+        `;
+        postsContainer.prepend(postElement); // Add the new post to the top of the container
 
-            // Create a post display
-            postElement.innerHTML = `
-                <h4>${username}</h4>
-                <p>${post.content}</p>
-                <small>${post.createdAt.toLocaleString()}</small>
-            `;
-            postsContainer.prepend(postElement);  // Add the new post to the top of the container
-        }).catch(error => {
-            console.error("Error fetching username:", error);
-        });
+        // Attach like handler to the newly added post
+        const likeButton = postElement.querySelector('.like-btn');
+        attachLikeHandlerToButton(likeButton, auth.currentUser.uid, post.id);
     }
 
     // Load posts for the currently logged-in user
     async function loadPosts() {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                const userId = user.uid; // Use UID
+                const userId = user.uid;
+
                 try {
-                    const userPosts = await db.collection('users').doc(userId).collection('posts')
+                    const userRef = db.collection('users').doc(userId);
+                    const userDoc = await userRef.get();
+
+                    if (!userDoc.exists) {
+                        throw new Error("User document not found.");
+                    }
+
+                    const username = userDoc.data().username || "Unknown User";
+
+                    const userPosts = await userRef.collection('posts')
                         .orderBy("createdAt", "desc")
                         .get();
 
+                    const postsContainer = document.getElementById('postsContainer');
+                    postsContainer.innerHTML = ''; // Clear current posts
+
                     userPosts.forEach(doc => {
                         addPostToDOM({
+                            id: doc.id,
                             content: doc.data().content,
-                            userId: userId,
+                            username: username,
+                            likesCount: doc.data().likesCount || 0,
                             createdAt: doc.data().createdAt.toDate()
                         });
                     });
