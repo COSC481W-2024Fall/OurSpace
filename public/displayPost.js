@@ -31,10 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Fetching posts for user UID:", userId);
 
             try {
-                // Fetch the user's document
+                // Fetch the user's document to get their name (not username)
                 const userDoc = await db.collection('users').doc(userId).get();
                 if (userDoc.exists) {
-                    const username = userDoc.data().username || "Unknown User";
+                    const name = userDoc.data().name || "Unknown User"; // Use 'name' instead of 'username'
 
                     // Fetch the user's posts
                     const postsSnapshot = await db
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             const postElement = document.createElement('div');
                             postElement.classList.add('post');
                             postElement.innerHTML = `
-                                <h4>${username}</h4>
+                                <h4>${name}</h4> <!-- Display the user's name -->
                                 <p>${post.content}</p>
                                 <small>${new Date(post.createdAt.seconds * 1000).toLocaleString()}</small>
                                 <button class="like-btn" data-post-id="${postId}">Like</button>
