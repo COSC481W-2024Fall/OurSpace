@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error("User data not found.");
                         }
 
-                        const username = userDoc.data().username || "Unknown User";
+                        const name = userDoc.data().name || "Unknown User"; // Fetch the name (not username)
 
                         // Add post to Firestore
                         const postRef = await userRef.collection('posts').add({
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const newPost = {
                             id: postRef.id,
                             content: postContent,
-                            username: username,
+                            username: name, // Use name instead of username
                             likesCount: 0,
                             createdAt: new Date()
                         };
@@ -70,46 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadPosts(); // Load existing posts on page load
 
-    // Function to attach a like handler to a specific button
-    function attachLikeHandlerToButton(button, userId, postId) {
-        button.addEventListener('click', async () => {
-            const postRef = db.collection('users').doc(userId).collection('posts').doc(postId);
-            const likesCountSpan = button.nextElementSibling; // Span showing likes count
-    
-            try {
-                const postDoc = await postRef.get();
-                if (postDoc.exists) {
-                    const postData = postDoc.data();
-                    const likedBy = postData.likedBy || [];
-                    let newLikesCount = postData.likesCount || 0; // Ensure likesCount is a number
-    
-                    if (likedBy.includes(userId)) {
-                        // User has already liked the post, so unlike it
-                        newLikesCount -= 1;
-                        await postRef.update({
-                            likesCount: newLikesCount,
-                            likedBy: firebase.firestore.FieldValue.arrayRemove(userId)
-                        });
-                    } else {
-                        // User has not liked the post, so like it
-                        newLikesCount += 1;
-                        await postRef.update({
-                            likesCount: newLikesCount,
-                            likedBy: firebase.firestore.FieldValue.arrayUnion(userId)
-                        });
-                    }
-    
-                    // Update UI immediately
-                    likesCountSpan.textContent = `${newLikesCount} likes`;
-                } else {
-                    console.error("Post document not found:", postId);
-                }
-            } catch (error) {
-                console.error("Error toggling like:", error);
-            }
-        });
-    }
-    
     // Function to add a post to the DOM
     function addPostToDOM(post) {
         const postsContainer = document.getElementById('postsContainer');
@@ -118,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Create the post display
         postElement.innerHTML = `
-            <h4>${post.username}</h4>
+            <h4>${post.username}</h4> <!-- Display the user's name -->
             <p>${post.content}</p>
             <small>${post.createdAt.toLocaleString()}</small>
             <button class="like-btn" data-post-id="${post.id}">Like</button>
@@ -145,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         throw new Error("User document not found.");
                     }
 
-                    const username = userDoc.data().username || "Unknown User";
+                    const name = userDoc.data().name || "Unknown User"; // Fetch the name instead of username
 
                     const userPosts = await userRef.collection('posts')
                         .orderBy("createdAt", "desc")
@@ -158,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         addPostToDOM({
                             id: doc.id,
                             content: doc.data().content,
-                            username: username,
+                            username: name, // Use name instead of username
                             likesCount: doc.data().likesCount || 0,
                             createdAt: doc.data().createdAt.toDate()
                         });
