@@ -160,12 +160,15 @@ function discardChanges() {
 document.addEventListener('DOMContentLoaded', async function () {
     auth.onAuthStateChanged(async (user) => {
         if (user) {
-            const username = user.email.split('@')[0];
             const userDoc = await db.collection("users").doc(user.uid).get();
 
             if (userDoc.exists) {
                 const userData = userDoc.data();
-                document.getElementById('username').innerText = userData.username;
+                // Use 'name' instead of 'username' (email)
+                const displayName = userData.name || "No name available";  // Default fallback
+                document.getElementById('username').innerText = displayName;  // Display the name here
+
+                // Display bio and profile picture
                 document.getElementById('bioDisplay').innerText = userData.bio || "No bio available";
                 originalProfilePic = userData.profilePic || "";
                 document.getElementById('profilePic').style.backgroundImage = `url(${originalProfilePic})`;
@@ -173,6 +176,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else {
                 console.log("No such document!");
                 await db.collection("users").doc(user.uid).set({
+                    name: "New User",  // Default name
                     username: user.email.split('@')[0],
                     bio: "",
                     profilePic: ""  
@@ -185,3 +189,4 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 });
+
