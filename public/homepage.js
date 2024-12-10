@@ -72,14 +72,14 @@ async function addFollower(followerData) {
     }
 
     if (userData.followers.includes(followerData.id)) {
-        alert(`${followerData.username} is already in your followers list.`);
+        alert(`${followerData.username} is already in your following list.`);
         return;
     }
 
     userData.followers.push(followerData.id);
     await userRef.update({ followers: userData.followers });
 
-    alert(`${followerData.username} has been added to your followers list.`);
+    alert(`${followerData.username} has been added to your following list.`);
     closeModal();
     displayUpdatedFollowersList();
 }
@@ -209,7 +209,7 @@ async function displayFollowersPosts() {
 
     if (!currentUser) {
         console.error("User is not logged in.");
-        alert("Please log in to view your followers' posts.");
+        alert("Please log in to view who you're following' posts.");
         return;
     }
 
